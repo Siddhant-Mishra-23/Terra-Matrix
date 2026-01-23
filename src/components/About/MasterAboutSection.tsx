@@ -6,7 +6,7 @@ const MasterAboutSection = () => {
       <div className="container">
         <div className="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
           <div>
-            <SectionTitle title="Engineering the Future with Intelligence & Precision" mb="36px"/>
+            <SectionTitle title="Engineering the Future with Intelligence & Precision"  paragraph="Innovative engineering solutions powered by data, intelligence, and precision." mb="36px"/>
             <div className="text-body-color text-lg leading-relaxed space-y-6 text-justify">
               <p>
                 Terra Matrix Engineering Consultants offers end-to-end services
