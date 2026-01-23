@@ -50,6 +50,7 @@ const ServiceSectionTwo = () => {
             <div className="order-1 w-full px-4 lg:order-2 lg:w-1/2">
               <SectionTitle
                 title="AI/ML & Data Analytics Services"
+                paragraph="Our AI/ML and data analytics services harness the power of artificial intelligence and machine learning to transform raw data into meaningful insights. We provide tailored solutions for predictive analytics, data visualization, and decision-making support across various industries."
                 mb="44px"
               />
 

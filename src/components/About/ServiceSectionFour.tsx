@@ -50,6 +50,7 @@ const ServiceSectionFour = () => {
             <div className="order-1 w-full px-4 lg:order-2 lg:w-1/2">
               <SectionTitle
                 title="Advanced Technology & Innovation"
+                paragraph="Innovative engineering solutions powered by data, intelligence, and precision for Advanced Technology & Innovation."
                 mb="44px"
               />
 

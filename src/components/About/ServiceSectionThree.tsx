@@ -31,6 +31,7 @@ const ServiceSectionThree = () => {
             <div className="w-full px-4 lg:w-1/2">
               <SectionTitle
                 title="Remote Sensing & Geospatial Services"
+                paragraph="Our remote sensing and geospatial services leverage advanced satellite imagery and GIS technologies to provide accurate and actionable insights for environmental monitoring, urban planning, disaster management, and resource management."
                 mb="44px"
               />
 
