@@ -36,8 +36,9 @@ const ServiceSectionFour = () => {
                   fill
                   className="mx-auto max-w-full drop-shadow-three dark:hidden dark:drop-shadow-none"
                 />
-                <Image
-                  src="/images/about/innovation-dark.svg"
+                {/* IMAGE — the below Image is for Dark theme, currently its same for both Light and dark */}
+                <Image 
+                  src="/images/about/innovation.svg"
                   alt="Advanced technology and innovation services dark"
                   fill
                   className="mx-auto hidden max-w-full drop-shadow-three dark:block dark:drop-shadow-none"

@@ -14,5 +14,9 @@ export type TeamMember = {
   summary: string;
   expertise: string[];
   experience: string[];
+  Achievements: string[];  
+  softwareSkills: string[];
   education: string[];
+  ContactNumber: Int16Array;
+  email: string;
 };

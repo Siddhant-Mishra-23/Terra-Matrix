@@ -4,12 +4,12 @@ import Image from "next/image";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Project Details Page - Terra Matrix",
-  description: "This is Project Details Page for Terra Matrix website.",
+  title: "Groundwater Forecast Project - Terra Matrix",
+  description: "This is Groundwater Forecast Project Details Page for Terra Matrix.",
   // other metadata
 };
 
-const BlogDetailsPage = () => {
+const ProjectDetailsPage = () => {
   return (
     <>
       <section className="pt-[150px] pb-[120px]">
@@ -53,8 +53,8 @@ const BlogDetailsPage = () => {
                             <path d="M11.4715 8.67529H10.6828C10.5394 8.67529 10.4438 8.77089 10.4438 8.91428V9.67904C10.4438 9.82243 10.5394 9.91802 10.6828 9.91802H11.4715C11.6149 9.91802 11.7105 9.82243 11.7105 9.67904V8.91428C11.7105 8.77089 11.591 8.67529 11.4715 8.67529Z" />
                             <path d="M3.89531 11.1606H3.10666C2.96327 11.1606 2.86768 11.2562 2.86768 11.3996V12.1644C2.86768 12.3078 2.96327 12.4034 3.10666 12.4034H3.89531C4.03871 12.4034 4.1343 12.3078 4.1343 12.1644V11.3996C4.1343 11.2562 4.03871 11.1606 3.89531 11.1606Z" />
                             <path d="M6.429 11.1606H5.64035C5.49696 11.1606 5.40137 11.2562 5.40137 11.3996V12.1644C5.40137 12.3078 5.49696 12.4034 5.64035 12.4034H6.429C6.57239 12.4034 6.66799 12.3078 6.66799 12.1644V11.3996C6.66799 11.2562 6.5485 11.1606 6.429 11.1606Z" />
-                            <path d="M8.93828 11.1606H8.14963C8.00624 11.1606 7.91064 11.2562 7.91064 11.3996V12.1644C7.91064 12.3078 8.00624 12.4034 8.14963 12.4034H8.93828C9.08167 12.4034 9.17727 12.3078 9.17727 12.1644V11.3996C9.17727 11.2562 9.08167 11.1606 8.93828 11.1606Z" />
-                            <path d="M11.4715 11.1606H10.6828C10.5394 11.1606 10.4438 11.2562 10.4438 11.3996V12.1644C10.4438 12.3078 10.5394 12.4034 10.6828 12.4034H11.4715C11.6149 12.4034 11.7105 12.3078 11.7105 12.1644V11.3996C11.7105 11.2562 11.591 11.1606 11.4715 11.1606Z" />
+                            <path d="M8.93828 11.1606H8.14963C8.00624 11.1606 7.91064 11.2562 7.91064 11.3996V12.1644C7.91064 12.3078 8.00624 12.4034 8.14963 12.4034H8.93828C9.08167 12.4034 9.17727 12.4034 9.17727 12.1644V11.3996C9.17727 11.2562 9.08167 11.1606 8.93828 11.1606Z" />
+                            <path d="M11.4715 11.1606H10.6828C10.5394 11.1606 10.4438 11.2562 10.4438 11.3996V12.1644C10.4438 12.3078 10.5394 12.4034 10.6828 12.4034H11.4715C11.6149 12.4034 11.7105 12.4034 11.7105 12.1644V11.3996C11.7105 11.2562 11.591 11.1606 11.4715 11.1606Z" />
                             <path d="M13.2637 3.3697H7.64754V2.58105C8.19721 2.43765 8.62738 1.91189 8.62738 1.31442C8.62738 0.597464 8.02992 0 7.28906 0C6.54821 0 5.95074 0.597464 5.95074 1.31442C5.95074 1.91189 6.35702 2.41376 6.93058 2.58105V3.3697H1.31442C0.597464 3.3697 0 3.96716 0 4.68412V13.2637C0 13.9807 0.597464 14.5781 1.31442 14.5781H13.2637C13.9807 14.5781 14.5781 13.9807 14.5781 13.2637V4.68412C14.5781 3.96716 13.9807 3.3697 13.2637 3.3697ZM6.6677 1.31442C6.6677 0.979841 6.93058 0.716957 7.28906 0.716957C7.62364 0.716957 7.91042 0.979841 7.91042 1.31442C7.91042 1.649 7.64754 1.91189 7.28906 1.91189C6.95448 1.91189 6.6677 1.6251 6.6677 1.31442ZM1.31442 4.08665H13.2637C13.5983 4.08665 13.8612 4.34954 13.8612 4.68412V6.45261H0.716957V4.68412C0.716957 4.34954 0.979841 4.08665 1.31442 4.08665ZM13.2637 13.8612H1.31442C0.979841 13.8612 0.716957 13.5983 0.716957 13.2637V7.16957H13.8612V13.2637C13.8612 13.5983 13.5983 13.8612 13.2637 13.8612Z" />
                           </svg>
                         </span>
@@ -124,16 +124,16 @@ const BlogDetailsPage = () => {
                   <p className="text-body-color mb-10 text-base leading-relaxed font-medium sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     The objectives were to
                     <ul className="text-body-color mb-10 list-inside list-disc">
-                      <li className="text-body-color mb-2 text-base font-medium sm:text-lg lg:text-base xl:text-lg">estimate monthly streamflow and potential evapotranspiration (PET) from 1981–2022</li>
+                      <li className="text-body-color mb-2 text-base font-medium sm:text-lg lg:text-base xl:text-lg">estimate monthly streamflow and potential evapotranspiration (PET) from 1981â€“2022</li>
                       <li className="text-body-color mb-2 text-base font-medium sm:text-lg lg:text-base xl:text-lg">derive long term GWS trends using a water budget approach</li>
-                      <li className="text-body-color mb-2 text-base font-medium sm:text-lg lg:text-base xl:text-lg"> compare several deep learning models—LSTM, stacked LSTM, BiLSTM, GRU, and their ensemble—for predicting GWS up to 2028.</li>
+                      <li className="text-body-color mb-2 text-base font-medium sm:text-lg lg:text-base xl:text-lg"> compare several deep learning modelsâ€”LSTM, stacked LSTM, BiLSTM, GRU, and their ensembleâ€”for predicting GWS up to 2028.</li>
                     </ul>
                   </p>
                   <p className="text-body-color mb-10 text-base leading-relaxed font-medium sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    The study area covers the Middle Mahanadi sub basin (drainage 9,421 km²) with eight rain gauge stations across Odisha districts such as Padampur, Phulbani, Deogan, Kantamal and Kesinga, characterized by monsoonal rainfall (1,170–1,490 mm) and contrasting upper water stress and lower water logging zones.
+                    The study area covers the Middle Mahanadi sub basin (drainage 9,421 kmÂ²) with eight rain gauge stations across Odisha districts such as Padampur, Phulbani, Deogan, Kantamal and Kesinga, characterized by monsoonal rainfall (1,170â€“1,490 mm) and contrasting upper water stress and lower water logging zones.
                   </p>
                   <p className="text-body-color mb-10 text-base leading-relaxed font-medium sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    The methodology used IMD gridded rainfall/temperature, SRTM DEM, Landsat LULC, and soil grids to compute PET via the Hargreaves–Samani method and surface runoff via SCS CN, then estimated GWS from a basin water balance S=P-ET-Q_s. Time series of
+                    The methodology used IMD gridded rainfall/temperature, SRTM DEM, Landsat LULC, and soil grids to compute PET via the Hargreavesâ€“Samani method and surface runoff via SCS CN, then estimated GWS from a basin water balance S=P-ET-Q_s. Time series of
                   </p> 
                   <h3 className="font-xl mb-10 leading-tight font-bold text-black sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight dark:text-white">
                     Digital marketplace for Ui/Ux designers.
@@ -316,9 +316,9 @@ const BlogDetailsPage = () => {
                         Popular Tags :
                       </h4>
                       <div className="flex items-center">
-                        <TagButton text="Design" />
-                        <TagButton text="Development" />
-                        <TagButton text="Info" />
+                        <TagButton text="Deep Learning" />
+                        <TagButton text="Groundwater Analysis" />
+                        <TagButton text="GIS" />
                       </div>
                     </div>
                   </div>
@@ -332,4 +332,4 @@ const BlogDetailsPage = () => {
   );
 };
 
-export default BlogDetailsPage;
+export default ProjectDetailsPage;

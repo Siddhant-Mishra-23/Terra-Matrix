@@ -11,17 +11,17 @@ export default function TeamSection() {
 
   return (
     <section className="container mx-auto px-4 py-16">
-      <div className="flex gap-6 overflow-x-auto pb-4">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {Team_Member.map((member) => (
           <button
             key={member.id}
             onClick={() => setActiveMember(member)}
-            className="min-w-[260px] rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 text-left transition hover:shadow-lg"
+            className="rounded-xl border border-gray-200 bg-white p-5 text-left transition hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
           >
             <img
               src={member.image}
               alt={member.name}
-              className="h-48 w-full rounded-lg object-cover"
+              className="aspect-square w-full rounded-lg object-cover"
             />
 
             <h3 className="mt-4 text-lg font-semibold text-gray-900 dark:text-white">

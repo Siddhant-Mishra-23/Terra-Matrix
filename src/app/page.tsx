@@ -1,7 +1,6 @@
 import MasterAboutSection from "@/components/About/MasterAboutSection";
 import Teams from "@/components/Team/TeamsScroll"
 import Project from "@/components/Project";
-import Institutes from "@/components/Institutes";
 import ScrollUp from "@/components/Common/ScrollUp";
 import Contact from "@/components/Contact";
 import Features from "@/components/Features";
@@ -10,8 +9,8 @@ import Video from "@/components/Video";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Next.js Template for Startup and SaaS",
-  description: "This is Home for Startup Nextjs Template",
+  title: "Terra Matrix - Innovative Digital Solutions",
+  description: "We design and develop scalable, high-performance digital products that help businesses grow and stand out",
   // other metadata
 };
 
@@ -23,7 +22,6 @@ export default function Home() {
       <Features />
       <Video />
       <MasterAboutSection/>
-      <Institutes />
       <Teams/>
       <Project />
       <Contact />

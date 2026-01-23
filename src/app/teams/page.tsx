@@ -4,8 +4,8 @@ import TeamSection from "@/components/Team/TeamSection"
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact Page | Free Next.js Template for Startup and SaaS",
-  description: "This is Contact Page for Startup Nextjs Template",
+  title: "Contact Page | Terra Matrix",
+  description: "This is Contact Page for Terra Matrix",
   // other metadata
 };
 

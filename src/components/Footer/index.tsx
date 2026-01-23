@@ -52,7 +52,7 @@ const Footer = () => {
               />
             </Link>
             <span className="text-xs text-body-color dark:text-body-color-dark">
-              Lorem ipsum dolor sit amet jwhriuewh
+              Tagline Tagline Tagline Tagline
             </span>
           </div>
 
@@ -61,8 +61,8 @@ const Footer = () => {
             <Link href="/about" className="hover:text-primary">
               About
             </Link>
-            <Link href="/support" className="hover:text-primary">
-              Support
+            <Link href="/contact" className="hover:text-primary">
+              Contact
             </Link>
             <Link href="/teams" className="hover:text-primary">
               Teams
