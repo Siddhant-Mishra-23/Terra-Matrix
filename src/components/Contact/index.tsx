@@ -1,6 +1,72 @@
+"use client";
+
+import { useState } from "react";
 import NewsLatterBox from "./NewsLatterBox";
+import { WEB3FORMS_CONTACT_KEY } from "@/config/web3forms";
 
 const Contact = () => {
+  const [result, setResult] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setResult("Sending...");
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const accessKey = WEB3FORMS_CONTACT_KEY;
+    if (!accessKey) {
+      form.reset();
+      setIsSubmitting(false);
+      return;
+    }
+    formData.append("access_key", accessKey);
+    form.reset();
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+
+      const text = await response.text();
+      const data = (() => {
+        try {
+          return JSON.parse(text);
+        } catch {
+          return null;
+        }
+      })();
+
+      const successValue = data?.success;
+      const normalizedSuccess =
+        typeof successValue === "string"
+          ? successValue.trim().toLowerCase()
+          : successValue;
+      const isSuccess =
+        normalizedSuccess === true ||
+        normalizedSuccess === 1 ||
+        normalizedSuccess === "true" ||
+        normalizedSuccess === "1";
+      const isFailure =
+        normalizedSuccess === false ||
+        normalizedSuccess === 0 ||
+        normalizedSuccess === "false" ||
+        normalizedSuccess === "0";
+      const isOkStatus = response.status >= 200 && response.status < 400;
+
+      if (isSuccess || (isOkStatus && !isFailure)) {
+        setResult("Message sent successfully");
+      } else {
+        setResult(data?.message || `Error (${response.status})`);
+      }
+    } catch (error) {
+      setResult("Error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section id="contact" className="overflow-hidden py-16 md:py-20 lg:py-28">
       <div className="container">
@@ -17,7 +83,7 @@ const Contact = () => {
               <p className="mb-12 text-base font-medium text-body-color">
                 Our support team will get back to you ASAP via email.
               </p>
-              <form>
+              <form onSubmit={onSubmit}>
                 <div className="-mx-4 flex flex-wrap">
                   <div className="w-full px-4 md:w-1/2">
                     <div className="mb-8">
@@ -28,8 +94,12 @@ const Contact = () => {
                         Your Name
                       </label>
                       <input
+                        id="name"
+                        name="name"
                         type="text"
                         placeholder="Enter your name"
+                        required
+                        autoComplete="name"
                         className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                       />
                     </div>
@@ -43,8 +113,12 @@ const Contact = () => {
                         Your Email
                       </label>
                       <input
+                        id="email"
+                        name="email"
                         type="email"
                         placeholder="Enter your email"
+                        required
+                        autoComplete="email"
                         className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                       />
                     </div>
@@ -58,17 +132,26 @@ const Contact = () => {
                         Your Message
                       </label>
                       <textarea
+                        id="message"
                         name="message"
                         rows={5}
                         placeholder="Enter your Message"
+                        required
                         className="border-stroke w-full resize-none rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                       ></textarea>
                     </div>
                   </div>
                   <div className="w-full px-4">
-                    <button className="rounded-xs bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 dark:shadow-submit-dark">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="rounded-xs bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70 dark:shadow-submit-dark"
+                    >
                       Submit Ticket
                     </button>
+                    {result ? (
+                      <p className="mt-4 text-sm text-body-color">{result}</p>
+                    ) : null}
                   </div>
                 </div>
               </form>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import SectionTitle from "../Common/SectionTitle";
 import { TeamData } from "./TeamData";
 const CARD_SCROLL = 392; // card + gap
@@ -75,7 +76,10 @@ const Team = () => {
         >
           {TeamData.map((member) => (
             <div key={member.id} className="w-[360px] flex-shrink-0">
-              <div className="h-full rounded-xs bg-white p-8 shadow-two transition hover:shadow-one dark:bg-dark dark:shadow-three">
+              <Link
+                href="/teams"
+                className="block h-full rounded-xs bg-white p-8 shadow-two transition hover:shadow-one dark:bg-dark dark:shadow-three"
+              >
                 <div className="mb-6 flex justify-center">
                   <div className="relative h-[96px] w-[96px] overflow-hidden rounded-full">
                     <Image
@@ -98,7 +102,7 @@ const Team = () => {
                 <p className="text-center text-sm leading-relaxed text-body-color dark:text-white/80">
                   {member.bio}
                 </p>
-              </div>
+              </Link>
             </div>
           ))}
         </div>

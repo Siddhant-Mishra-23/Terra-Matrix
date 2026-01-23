@@ -3,14 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 const SingleProject = ({ project }: { project: Project }) => {
-  const { title, image, paragraph, author, tags, publishDate } = project;
+  const { title, image, paragraph, author, tags, publishDate, href } = project;
   return (
     <>
       <div className="group shadow-one hover:shadow-two dark:bg-dark dark:hover:shadow-gray-dark relative overflow-hidden rounded-xs bg-white duration-300">
-        <Link
-          href="/project-details"
-          className="relative block aspect-37/22 w-full"
-        >
+        <Link href={href} className="relative block aspect-37/22 w-full">
           <span className="bg-primary absolute top-6 right-6 z-20 inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold text-white capitalize">
             {tags[0]}
           </span>
@@ -19,7 +16,7 @@ const SingleProject = ({ project }: { project: Project }) => {
         <div className="p-6 sm:p-8 md:px-6 md:py-8 lg:p-8 xl:px-5 xl:py-8 2xl:p-8">
           <h3>
             <Link
-              href="/project-details"
+              href={href}
               className="hover:text-primary dark:hover:text-primary mb-4 block text-xl font-bold text-black sm:text-2xl dark:text-white"
             >
               {title}

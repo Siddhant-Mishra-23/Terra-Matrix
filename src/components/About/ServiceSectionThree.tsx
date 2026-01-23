@@ -62,8 +62,9 @@ const ServiceSectionThree = () => {
                   fill
                   className="mx-auto max-w-full drop-shadow-three dark:hidden dark:drop-shadow-none"
                 />
+                {/* IMAGE — the below Image is for Dark theme, currently its same for both Light and dark */}
                 <Image
-                  src="/images/about/geospatial-dark.svg"
+                  src="/images/about/geospatial.svg"
                   alt="Remote sensing and geospatial services dark"
                   fill
                   className="mx-auto hidden max-w-full drop-shadow-three dark:block dark:drop-shadow-none"

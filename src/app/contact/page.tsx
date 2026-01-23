@@ -4,8 +4,8 @@ import Contact from "@/components/Contact";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact Page | Free Next.js Template for Startup and SaaS",
-  description: "This is Contact Page for Startup Nextjs Template",
+  title: "Contact Page | Terra Matrix",
+  description: "This is Contact Page for Terra Matrix",
   // other metadata
 };
 
@@ -14,7 +14,7 @@ const ContactPage = () => {
     <>
       <Breadcrumb
         pageName="Contact Page"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In varius eros eget sapien consectetur ultrices. Ut quis dapibus libero."
+        description="Contact the Terra Matrix team for details, Get Innovative solutions. At Terra Matrix, we are dedicated to providing top-notch services tailored to your needs.Terra Matrix, Your Trusted Partner in Innovation."
       />
 
       <Contact />

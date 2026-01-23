@@ -3,16 +3,17 @@ import { Project } from "@/types/project";
 const projectData: Project[] = [
   {
     id: 1,
-    title: "Best UI components for modern websites",
+    title: "Deep Learning Framework To Forecast Groundwater Storage",
     paragraph:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet dictum neque, laoreet dolor.",
-    image: "/images/blog/blog-01.jpg",
+      "The paper develops an ensemble deep learning framework to forecast groundwater storage (GWS) under hydrological variability.",
+    image: "/images/project/Project-01.png",
+    href: "/project-details/groundwater-forecast",
     author: {
-      name: "Samuyl Joshi",
-      image: "/images/blog/author-03.png",
-      designation: "Graphic Designer",
+      name: "Dr. Sovan Sankalp",
+      image: "/images/team/Dr. Sovan Sankalp.jpeg",
+      designation: "AI and Geospatial Applications Specialist",
     },
-    tags: ["creative"],
+    tags: ["Deep Learning"],
     publishDate: "2025",
   },
   {
@@ -20,10 +21,11 @@ const projectData: Project[] = [
     title: "9 simple ways to improve your design skills",
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet dictum neque, laoreet dolor.",
-    image: "/images/blog/blog-02.jpg",
+    image: "/images/project/Project-02.jpg",
+    href: "/project-details/design-skills",
     author: {
-      name: "Musharof Chy",
-      image: "/images/blog/author-02.png",
+      name: "Dr. Asit Kumar Dandapat",
+      image: "/images/team/Dr. Asit Kumar Dandapat.jpeg",
       designation: "Content Writer",
     },
     tags: ["computer"],
@@ -34,10 +36,11 @@ const projectData: Project[] = [
     title: "Tips to quickly improve your coding speed.",
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet dictum neque, laoreet dolor.",
-    image: "/images/blog/blog-03.jpg",
+    image: "/images/project/Project-03.jpg",
+    href: "/project-details/coding-speed",
     author: {
-      name: "Lethium Deo",
-      image: "/images/blog/author-03.png",
+      name: "Dr. Arpan Pradhan",
+      image: "/images/team/Dr. Arpan Pradhan.jpeg",
       designation: "Graphic Designer",
     },
     tags: ["design"],
