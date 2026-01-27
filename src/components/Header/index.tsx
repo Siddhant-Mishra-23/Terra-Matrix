@@ -16,7 +16,7 @@ const Header = () => {
     const handleSticky = () => setSticky(window.scrollY >= 80);
     window.addEventListener("scroll", handleSticky);
     return () => window.removeEventListener("scroll", handleSticky);
-  }, [window.scrollY]);
+  }, []);
 
   return (
     <header
