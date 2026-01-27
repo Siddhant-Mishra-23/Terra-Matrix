@@ -16,20 +16,29 @@ const Header = () => {
     const handleSticky = () => setSticky(window.scrollY >= 80);
     window.addEventListener("scroll", handleSticky);
     return () => window.removeEventListener("scroll", handleSticky);
-  }, []);
+  }, [window.scrollY]);
 
   return (
     <header
       className={`header top-0 left-0 z-40 w-full ${
         sticky
-          ? "fixed bg-white/80 backdrop-blur-xs shadow-sticky transition dark:bg-gray-dark dark:shadow-sticky-dark"
-          : "absolute bg-transparent text-white"
+          ? "shadow-sticky dark:bg-gray-dark dark:shadow-sticky-dark fixed bg-white/80 backdrop-blur-xs transition"
+          : "absolute bg-transparent"
       }`}
     >
       <div className="container">
         <div className="flex items-center px-4">
-          <Link href="/" className={`mr-10 block ${sticky ? "py-5 lg:py-2" : "py-8"}`}>
-            <Image src="/images/logo/logo-2.svg" alt="logo" width={140} height={30} className="dark:hidden" />
+          <Link
+            href="/"
+            className={`mr-10 block ${sticky ? "py-5 lg:py-2" : "py-8"}`}
+          >
+            <Image
+              src="/images/logo/logo-2.svg"
+              alt="logo"
+              width={140}
+              height={30}
+              className="dark:hidden"
+            />
             <Image
               src="/images/logo/logo.svg"
               alt="logo"
@@ -47,13 +56,9 @@ const Header = () => {
                   <Link
                     href={item.path}
                     className={`py-6 text-base ${
-                      sticky
-                        ? pathname === item.path
-                          ? "text-primary dark:text-white"
-                          : "text-dark hover:text-primary dark:text-white/70 dark:hover:text-white"
-                        : pathname === item.path
-                          ? "!text-white"
-                          : "!text-white/90 hover:!text-white"
+                      pathname === item.path
+                        ? `${pathname === "/" && !sticky ? "text-white" : "text-primary"} dark:text-white`
+                        : `${pathname === "/" && !sticky ? "text-gray-light/70" : "text-dark"} hover:text-primary dark:text-white/70 dark:hover:text-white`
                     }`}
                   >
                     {item.title}
@@ -77,7 +82,7 @@ const Header = () => {
               <button
                 onClick={() => setNavbarOpen(!navbarOpen)}
                 aria-label="Mobile Menu"
-                className="rounded-lg px-2 py-2 focus:ring-2 focus:ring-primary"
+                className="focus:ring-primary rounded-lg px-2 py-2 focus:ring-2"
               >
                 <span
                   className={`my-1.5 block h-0.5 w-[22px] transition-all ${
@@ -103,7 +108,7 @@ const Header = () => {
         <nav
           className={`lg:hidden ${
             navbarOpen ? "block" : "hidden"
-          } absolute left-0 top-full w-full bg-white shadow-md dark:bg-dark`}
+          } dark:bg-dark absolute top-full left-0 w-full bg-white shadow-md`}
         >
           <ul className="flex flex-col space-y-4 px-6 py-6">
             {menuData.map((item) => (
