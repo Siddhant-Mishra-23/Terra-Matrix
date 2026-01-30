@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import SectionTitle from "../Common/SectionTitle";
 import { TeamData } from "./TeamData";
+import { Team as TeamType } from "@/types/team";
+
 const CARD_SCROLL = 392; // card + gap
 
 /* ----------------------------------
@@ -13,6 +16,7 @@ const CARD_SCROLL = 392; // card + gap
 const Team = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [shuffledTeam, setShuffledTeam] = useState<TeamType[]>([]);
 
   const startAutoScroll = () => {
     intervalRef.current = setInterval(() => {
@@ -34,6 +38,24 @@ const Team = () => {
   useEffect(() => {
     startAutoScroll();
     return stopAutoScroll;
+  }, []);
+
+  useEffect(() => {
+    // Separate partners (top 3) and others
+    const partners = TeamData.filter((member) => [1, 2, 3].includes(member.id));
+    const others = TeamData.filter((member) => ![1, 2, 3].includes(member.id));
+
+    // Fisher-Yates shuffle
+    const shuffleArray = (array: TeamType[]) => {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+
+    setShuffledTeam([...shuffleArray(partners), ...shuffleArray(others)]);
   }, []);
 
   return (
@@ -72,13 +94,26 @@ const Team = () => {
           ref={scrollRef}
           onMouseEnter={stopAutoScroll}
           onMouseLeave={startAutoScroll}
-          className="flex gap-8 overflow-hidden"
+          className="flex gap-8 overflow-hidden py-4"
         >
-          {TeamData.map((member) => (
-            <div key={member.id} className="w-[360px] flex-shrink-0">
+          {shuffledTeam.map((member, index) => (
+            <motion.div
+              key={member.id}
+              className="w-[360px] flex-shrink-0"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              whileHover={{
+                scale: 1.05,
+                y: -5,
+                boxShadow: "0 25px 50px rgba(0,0,0,0.2)",
+                transition: { duration: 0.2 }
+              }}
+            >
               <Link
                 href="/teams"
-                className="block h-full rounded-xs bg-white p-8 shadow-two transition hover:shadow-one dark:bg-dark dark:shadow-three"
+                className="block h-full rounded-xs bg-white p-8 shadow-two transition duration-300 hover:shadow-one dark:bg-dark dark:shadow-three"
               >
                 <div className="mb-6 flex justify-center">
                   <div className="relative h-[96px] w-[96px] overflow-hidden rounded-full">
@@ -103,7 +138,7 @@ const Team = () => {
                   {member.bio}
                 </p>
               </Link>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
