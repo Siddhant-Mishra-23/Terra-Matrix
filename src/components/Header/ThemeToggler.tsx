@@ -14,7 +14,7 @@ const ThemeToggler = ({ isSticky = true }: ThemeTogglerProps) => {
     <button
       aria-label="theme toggler"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className={`bg-gray-2 dark:bg-dark-bg flex h-9 w-9 cursor-pointer items-center justify-center rounded-full md:h-14 md:w-14 ${`${pathname === "/" && !isSticky ? "text-white" : "text-dark"} dark:text-white`}`}
+      className={`bg-gray-2 dark:bg-dark-bg flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-lg active:scale-95 md:h-14 md:w-14 ${`${pathname === "/" && !isSticky ? "text-white" : "text-dark"} dark:text-white`}`}
     >
       <svg
         viewBox="0 0 23 23"

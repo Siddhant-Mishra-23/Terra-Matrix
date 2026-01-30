@@ -141,6 +141,74 @@ const Contact = () => {
                       ></textarea>
                     </div>
                   </div>
+                  <div className="w-full px-4 md:w-1/2">
+                    <div className="mb-8">
+                      <label
+                        htmlFor="profession"
+                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
+                      >
+                        Profession
+                      </label>
+                      <input
+                        id="profession"
+                        name="profession"
+                        type="text"
+                        placeholder="Enter your profession"
+                        className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full px-4 md:w-1/2">
+                    <div className="mb-8">
+                      <label
+                        htmlFor="mobile"
+                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
+                      >
+                        Mobile Number (Optional)
+                      </label>
+                      <input
+                        id="mobile"
+                        name="mobile"
+                        type="tel"
+                        placeholder="Enter your mobile number"
+                        className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full px-4 md:w-1/2">
+                    <div className="mb-8">
+                      <label
+                        htmlFor="designation"
+                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
+                      >
+                        Designation
+                      </label>
+                      <input
+                        id="designation"
+                        name="designation"
+                        type="text"
+                        placeholder="Enter your designation"
+                        className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full px-4 md:w-1/2">
+                    <div className="mb-8">
+                      <label
+                        htmlFor="city"
+                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
+                      >
+                        City
+                      </label>
+                      <input
+                        id="city"
+                        name="city"
+                        type="text"
+                        placeholder="Enter your city"
+                        className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      />
+                    </div>
+                  </div>
                   <div className="w-full px-4">
                     <button
                       type="submit"
