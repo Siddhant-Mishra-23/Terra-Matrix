@@ -26,7 +26,7 @@ export default function TeamDrawer({
       />
 
       {/* Drawer */}
-      <aside className="w-full max-w-xl overflow-y-auto bg-white p-8 dark:bg-gray-900">
+      <aside className="w-full max-w-xl overflow-y-auto bg-white p-8">
         <button
           onClick={onClose}
           className="mb-6 text-sm text-gray-500 hover:text-primary"
@@ -40,15 +40,15 @@ export default function TeamDrawer({
           className="aspect-square w-full rounded-xl object-cover"
         />
 
-        <h3 className="mt-6 text-2xl font-bold text-gray-900 dark:text-white">
+        <h3 className="mt-6 text-2xl font-bold text-gray-900">
           {member.name}
         </h3>
         <p className="text-primary">{member.role}</p>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-gray-600">
           {member.domain}
         </p>
 
-        <p className="mt-4 text-gray-600 dark:text-gray-400">
+        <p className="mt-4 text-gray-600">
           {member.summary}
         </p>
 
@@ -64,10 +64,10 @@ export default function TeamDrawer({
           items={member.education}
         />
         <div className="mt-6">
-          <h4 className="font-semibold text-gray-900 dark:text-white">
+          <h4 className="font-semibold text-gray-900">
             Contact
           </h4>
-          <div className="mt-2 text-gray-600 dark:text-gray-400">
+          <div className="mt-2 text-gray-600">
             <p>{phoneNumber ? `Phone: ${phoneNumber}` : "Phone: N/A"}</p>
             <p>{member.email ? `Email: ${member.email}` : "Email: N/A"}</p>
           </div>
@@ -88,10 +88,10 @@ function DetailSection({
 
   return (
     <div className="mt-6">
-      <h4 className="font-semibold text-gray-900 dark:text-white">
+      <h4 className="font-semibold text-gray-900">
         {title}
       </h4>
-      <ul className="mt-2 list-disc pl-5 text-gray-600 dark:text-gray-400">
+      <ul className="mt-2 list-disc pl-5 text-gray-600">
         {items.map((item, idx) => (
           <li key={idx}>{item}</li>
         ))}

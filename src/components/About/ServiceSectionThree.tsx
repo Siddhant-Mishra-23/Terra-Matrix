@@ -24,7 +24,7 @@ const ServiceSectionThree = () => {
   return (
     <section id="geospatial-services" className="pt-16 md:pt-20 lg:pt-28">
       <div className="container">
-        <div className="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
+        <div className="border-b border-body-color/[.15] pb-16 md:pb-20 lg:pb-28">
           <div className="-mx-4 flex flex-wrap items-center">
 
             {/* LEFT CONTENT */}
@@ -61,14 +61,7 @@ const ServiceSectionThree = () => {
                   src="/images/about/geospatial.svg"
                   alt="Remote sensing and geospatial services"
                   fill
-                  className="mx-auto max-w-full drop-shadow-three dark:hidden dark:drop-shadow-none"
-                />
-                {/* IMAGE — the below Image is for Dark theme, currently its same for both Light and dark */}
-                <Image
-                  src="/images/about/geospatial.svg"
-                  alt="Remote sensing and geospatial services dark"
-                  fill
-                  className="mx-auto hidden max-w-full drop-shadow-three dark:block dark:drop-shadow-none"
+                  className="mx-auto max-w-full drop-shadow-three"
                 />
               </div>
             </div>

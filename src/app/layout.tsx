@@ -61,9 +61,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html lang="en">
       <head />
-      <body className={`bg-[#FCFCFC] dark:bg-black ${inter.className}`}>
+      <body className={`bg-[#FCFCFC] ${inter.className}`}>
         <Providers>
           <div className="isolate">
             <Header />
@@ -76,5 +76,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-

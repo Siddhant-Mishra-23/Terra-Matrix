@@ -4,18 +4,18 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-white py-5 dark:bg-gray-dark">
+    <footer className="bg-white py-5">
       <div className="container">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          
+
           {/* Left: Social Icons */}
           <div className="flex items-center space-x-4">
-            <a href="/" aria-label="Facebook" className="text-body-color hover:text-primary dark:text-body-color-dark">
+            <a href="/" aria-label="Facebook" className="text-body-color hover:text-primary">
               <svg width="16" height="16" viewBox="0 0 22 22" fill="currentColor">
                 <path d="M12.1 10.4939V7.42705C12.1 6.23984 13.085 5.27741 14.3 5.27741H16.5V2.05296L13.5135 1.84452C10.9664 1.66676 8.8 3.63781 8.8 6.13287V10.4939H5.5V13.7183H8.8V20.1667H12.1V13.7183H15.4L16.5 10.4939H12.1Z" />
               </svg>
             </a>
-            <a href="/" aria-label="X" className="text-body-color hover:text-primary dark:text-body-color-dark">
+            <a href="/" aria-label="X" className="text-body-color hover:text-primary">
               <svg width="16" height="16" viewBox="0 0 22 22" fill="currentColor">
                 <path d="M13.9831 19.25L9.82094 13.3176L4.61058 19.25H2.40625L8.843 11.9233L2.40625 2.75H8.06572L11.9884 8.34127L16.9034 2.75H19.1077L12.9697 9.73737L19.6425 19.25H13.9831Z" />
               </svg>
@@ -23,7 +23,7 @@ const Footer = () => {
             <a
               href="/"
               aria-label="LinkedIn"
-              className="text-body-color hover:text-primary dark:text-body-color-dark"
+              className="text-body-color hover:text-primary"
             >
               <svg width="16" height="16" viewBox="0 0 17 16" fill="currentColor">
                 <path d="M5.44852 13.1089H3.17444V5.7709H5.44852V13.1089Z" />
@@ -39,19 +39,11 @@ const Footer = () => {
               <Image
                 src="/images/logo/logo-2.svg"
                 alt="logo"
-                className="dark:hidden"
-                width={110}
-                height={24}
-              />
-              <Image
-                src="/images/logo/logo.svg"
-                alt="logo"
-                className="hidden dark:block"
                 width={110}
                 height={24}
               />
             </Link>
-            <span className="text-xs text-body-color dark:text-body-color-dark">
+            <span className="text-xs text-body-color">
               Tagline Tagline Tagline Tagline
             </span>
           </div>

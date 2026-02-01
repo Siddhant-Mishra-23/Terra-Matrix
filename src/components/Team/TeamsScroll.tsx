@@ -59,7 +59,7 @@ const Team = () => {
   }, []);
 
   return (
-    <section className="relative z-10 bg-gray-light py-16 dark:bg-bg-color-dark md:py-20 lg:py-28">
+    <section className="relative z-10 bg-gray-light py-16 md:py-20 lg:py-28">
       <div className="container relative">
         <SectionTitle
           title="Meet Our Team"
@@ -73,7 +73,7 @@ const Team = () => {
             scrollRef.current?.scrollBy({ left: -CARD_SCROLL, behavior: "smooth" })
           }
           aria-label="Scroll Left"
-          className="absolute left-2 top-1/2 z-20 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white text-primary shadow-two transition hover:bg-primary hover:text-white dark:bg-dark"
+          className="absolute left-2 top-1/2 z-20 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white text-primary shadow-two transition hover:bg-primary hover:text-white"
         >
           <span className="text-2xl font-semibold">‹</span>
         </button>
@@ -84,7 +84,7 @@ const Team = () => {
             scrollRef.current?.scrollBy({ left: CARD_SCROLL, behavior: "smooth" })
           }
           aria-label="Scroll Right"
-          className="absolute right-2 top-1/2 z-20 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white text-primary shadow-two transition hover:bg-primary hover:text-white dark:bg-dark"
+          className="absolute right-2 top-1/2 z-20 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white text-primary shadow-two transition hover:bg-primary hover:text-white"
         >
           <span className="text-2xl font-semibold">›</span>
         </button>
@@ -113,7 +113,7 @@ const Team = () => {
             >
               <Link
                 href="/teams"
-                className="block h-full rounded-xs bg-white p-8 shadow-two transition duration-300 hover:shadow-one dark:bg-dark dark:shadow-three"
+                className="block h-full rounded-xs bg-white p-8 shadow-two transition duration-300 hover:shadow-one"
               >
                 <div className="mb-6 flex justify-center">
                   <div className="relative h-[96px] w-[96px] overflow-hidden rounded-full">
@@ -126,7 +126,7 @@ const Team = () => {
                   </div>
                 </div>
 
-                <h3 className="mb-1 text-center text-lg font-semibold text-dark dark:text-white">
+                <h3 className="mb-1 text-center text-lg font-semibold text-dark">
                   {member.name}
                 </h3>
 
@@ -134,7 +134,7 @@ const Team = () => {
                   {member.role}
                 </p>
 
-                <p className="text-center text-sm leading-relaxed text-body-color dark:text-white/80">
+                <p className="text-center text-sm leading-relaxed text-body-color">
                   {member.bio}
                 </p>
               </Link>
