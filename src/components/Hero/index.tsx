@@ -6,9 +6,9 @@ const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // --- CONFIGURATION ---
-  const frameCount = 100; // Total number of images
+  const frameCount = 205; // Total number of images (all frames in Frames_2)
   const folderPath = "/Frames_2";
-  const durationInSeconds = 8; // Total time for one loop
+  const durationInSeconds = 16; // Total time for animation playback
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -40,12 +40,8 @@ const Hero = () => {
     let frameIndex = 0;
     let lastFrameTime = 0;
     let animationComplete = false;
-    let isFading = false;
-    let fadeProgress = 0;
-    const fadeSteps = 15; // Number of steps for fade transition
 
     // Calculate how many milliseconds should pass between each frame
-    // 8000ms / 100 frames = 80ms per frame
     const frameInterval = (durationInSeconds * 1000) / frameCount;
 
     // Helper: Draw Logic with optional alpha
@@ -61,7 +57,7 @@ const Hero = () => {
       ctx.globalAlpha = 1;
     };
 
-    // 3. Animation Loop - plays once, fades to first frame, then stops
+    // 3. Animation Loop - plays once and stops at last frame
     const render = (currentTime: number) => {
       if (animationComplete) return; // Stop if animation is done
 
@@ -72,34 +68,17 @@ const Hero = () => {
       if (deltaTime > frameInterval) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        if (isFading) {
-          // Crossfade from last frame to first frame
-          fadeProgress++;
-          const fadeAlpha = fadeProgress / fadeSteps;
+        // Normal playback
+        drawFrame(images[frameIndex]);
+        frameIndex++;
 
-          // Draw last frame fading out
-          drawFrame(images[frameCount - 1], 1 - fadeAlpha);
-          // Draw first frame fading in
-          drawFrame(images[0], fadeAlpha);
-
-          if (fadeProgress >= fadeSteps) {
-            // Fade complete - show first frame and stop
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawFrame(images[0], 1);
-            animationComplete = true;
-            return;
-          }
-        } else {
-          // Normal playback
-          drawFrame(images[frameIndex]);
-          frameIndex++;
-
-          // Check if we've completed all frames
-          if (frameIndex >= frameCount) {
-            // Start fade transition
-            isFading = true;
-            fadeProgress = 0;
-          }
+        // Check if we've completed all frames - stop at last frame
+        if (frameIndex >= frameCount) {
+          // Show last frame and stop
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          drawFrame(images[frameCount - 1], 1);
+          animationComplete = true;
+          return;
         }
 
         // Reset timer, accounting for drift
@@ -113,7 +92,7 @@ const Hero = () => {
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      const currentImg = images[animationComplete ? 0 : (frameIndex < frameCount ? frameIndex : 0)];
+      const currentImg = images[animationComplete ? frameCount - 1 : (frameIndex < frameCount ? frameIndex : frameCount - 1)];
       if (currentImg && currentImg.complete) drawFrame(currentImg);
     };
 
@@ -133,10 +112,10 @@ const Hero = () => {
     <>
       <section
         id="home"
-        className="relative z-10 flex min-h-screen w-full items-center overflow-hidden px-4 pt-[120px] dark:bg-gray-dark md:pt-[150px] xl:pt-[180px] 2xl:pt-[210px]"
+        className="relative z-10 flex min-h-screen w-full items-center overflow-hidden px-4 pt-[120px] md:pt-[150px] xl:pt-[180px] 2xl:pt-[210px]"
       >
-        <div className="w-full text-center relative z-10">
-          <h1 className="text-gold text-4xl font-bold leading-tight sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight lg:text-7xl drop-shadow-lg">
+        <div className="w-full text-center relative z-10 -mt-55">
+          <h1 className="text-primary text-4xl font-bold leading-tight sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight lg:text-7xl drop-shadow-lg">
             <span className="block">Welcome To</span>
             <span className="block">Terra-Matrix Engineering</span>
           </h1>
@@ -155,4 +134,3 @@ const Hero = () => {
 };
 
 export default Hero;
-

@@ -17,10 +17,10 @@ const ProjectDetailsPage = () => {
           <div className="-mx-4 flex flex-wrap justify-center">
             <div className="w-full px-4 lg:w-8/12">
               <div>
-                <h2 className="mb-8 text-3xl leading-tight font-bold text-black sm:text-4xl sm:leading-tight dark:text-white">
+                <h2 className="mb-8 text-3xl leading-tight font-bold text-black sm:text-4xl sm:leading-tight">
                   Deep Learning Framework To Forecast Groundwater Storage
                 </h2>
-                <div className="border-body-color/10 mb-10 flex flex-wrap items-center justify-between border-b pb-4 dark:border-white/10">
+                <div className="border-body-color/10 mb-10 flex flex-wrap items-center justify-between border-b pb-4">
                   <div className="flex flex-wrap items-center">
                     <div className="mr-10 mb-5 flex items-center">
                       <div className="mr-4">
@@ -102,7 +102,7 @@ const ProjectDetailsPage = () => {
                 </div>
                 <div>
                   <p className="text-body-color mb-10 text-base leading-relaxed font-medium sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    The paper develops an ensemble deep learning framework to forecast groundwater storage (GWS) under hydrological variability in the Middle Mahanadi Basin, Odisha, India. 
+                    The paper develops an ensemble deep learning framework to forecast groundwater storage (GWS) under hydrological variability in the Middle Mahanadi Basin, Odisha, India.
                   </p>
                   <div className="mb-10 w-full overflow-hidden rounded-sm">
                     <div className="relative aspect-97/60 w-full sm:aspect-97/44">
@@ -115,11 +115,11 @@ const ProjectDetailsPage = () => {
                     </div>
                   </div>
                   <p className="text-body-color mb-8 text-base leading-relaxed font-medium sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    The paper develops an ensemble deep learning framework to forecast groundwater storage (GWS) under hydrological variability in the 
-                    <strong className="text-primary dark:text-white">
+                    The paper develops an ensemble deep learning framework to forecast groundwater storage (GWS) under hydrological variability in the
+                    <strong className="text-primary">
                       Middle Mahanadi Basin
                     </strong>
-                     Odisha, India.
+                    Odisha, India.
                   </p>
                   <p className="text-body-color mb-10 text-base leading-relaxed font-medium sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     The objectives were to
@@ -134,8 +134,8 @@ const ProjectDetailsPage = () => {
                   </p>
                   <p className="text-body-color mb-10 text-base leading-relaxed font-medium sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     The methodology used IMD gridded rainfall/temperature, SRTM DEM, Landsat LULC, and soil grids to compute PET via the Hargreavesâ€“Samani method and surface runoff via SCS CN, then estimated GWS from a basin water balance S=P-ET-Q_s. Time series of
-                  </p> 
-                  <h3 className="font-xl mb-10 leading-tight font-bold text-black sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight dark:text-white">
+                  </p>
+                  <h3 className="font-xl mb-10 leading-tight font-bold text-black sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
                     Digital marketplace for Ui/Ux designers.
                   </h3>
                   <p className="text-body-color mb-10 text-base leading-relaxed font-medium sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">

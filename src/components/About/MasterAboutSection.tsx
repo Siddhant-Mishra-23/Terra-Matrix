@@ -4,9 +4,9 @@ const MasterAboutSection = () => {
   return (
     <section id="master-about" className="pt-16 md:pt-20 lg:pt-28">
       <div className="container">
-        <div className="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
+        <div className="border-b border-body-color/[.15] pb-16 md:pb-20 lg:pb-28">
           <div>
-            <SectionTitle title="Engineering the Future with Intelligence & Precision"  paragraph="Innovative engineering solutions powered by data, intelligence, and precision." mb="36px"/>
+            <SectionTitle title="Engineering the Future with Intelligence & Precision" paragraph="Innovative engineering solutions powered by data, intelligence, and precision." mb="36px" />
             <div className="text-body-color text-lg leading-relaxed space-y-6 text-justify">
               <p>
                 Terra Matrix Engineering Consultants offers end-to-end services
@@ -36,8 +36,7 @@ const MasterAboutSection = () => {
                 development across India.
               </p>
 
-              {/* <p className="font-medium text-dark dark:text-white"> */}
-              <p className="font-medium text-green dark:text-yellow">
+              <p className="font-medium text-green">
                 From concept to commissioning, Terra Matrix Engineering
                 Consultants is your trusted partner for the future of
                 engineering.

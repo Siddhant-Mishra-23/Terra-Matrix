@@ -36,7 +36,7 @@ export default function TeamSection() {
           <motion.button
             key={member.id}
             onClick={() => setActiveMember(member)}
-            className="rounded-xl border border-gray-200 bg-white p-5 text-left dark:border-gray-800 dark:bg-gray-900"
+            className="rounded-xl border border-gray-200 bg-white p-5 text-left"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -54,11 +54,11 @@ export default function TeamSection() {
               className="aspect-square w-full rounded-lg object-cover"
             />
 
-            <h3 className="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="mt-4 text-lg font-semibold text-gray-900">
               {member.name}
             </h3>
             <p className="text-sm text-primary">{member.role}</p>
-            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <p className="mt-1 text-sm text-gray-600">
               {member.domain}
             </p>
           </motion.button>

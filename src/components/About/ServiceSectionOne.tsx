@@ -24,10 +24,10 @@ const ServiceSectionOne = () => {
   return (
     <section id="civil-services" className="pt-16 md:pt-20 lg:pt-28">
       <div className="container">
-        <div className="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
+        <div className="border-b border-body-color/[.15] pb-16 md:pb-20 lg:pb-28">
           <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 lg:w-1/2">
-              <SectionTitle title="Civil Engineering & Infrastructure Services" paragraph="Innovative engineering solutions powered by data, intelligence, and precision for Civil Engineering & Infrastructure Services." mb="44px"/>
+              <SectionTitle title="Civil Engineering & Infrastructure Services" paragraph="Innovative engineering solutions powered by data, intelligence, and precision for Civil Engineering & Infrastructure Services." mb="44px" />
               <div className="mb-12 max-w-[570px] lg:mb-0">
                 <div className="mx-[-12px] flex flex-wrap">
                   <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
@@ -45,9 +45,7 @@ const ServiceSectionOne = () => {
             </div>
             <div className="w-full px-4 lg:w-1/2">
               <div className="relative mx-auto aspect-25/24 max-w-[500px] lg:mr-0">
-                <Image src="/images/about/civil-infra.svg" alt="Civil engineering and infrastructure services" fill className="mx-auto max-w-full drop-shadow-three dark:hidden dark:drop-shadow-none lg:mr-0" />
-                {/* IMAGE — the below Image is for Dark theme, currently its same for both Light and dark */}
-                <Image src="/images/about/civil-infra.svg" alt="Civil engineering and infrastructure services dark" fill className="mx-auto hidden max-w-full drop-shadow-three dark:block dark:drop-shadow-none lg:mr-0"/>
+                <Image src="/images/about/civil-infra.svg" alt="Civil engineering and infrastructure services" fill className="mx-auto max-w-full drop-shadow-three lg:mr-0" />
               </div>
             </div>
           </div>
