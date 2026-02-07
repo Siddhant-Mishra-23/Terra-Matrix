@@ -31,10 +31,10 @@ const Header = () => {
             className={`mr-10 block ${sticky ? "py-5 lg:py-2" : "py-8"}`}
           >
             <Image
-              src="/images/logo/logo-2.svg"
+              src="/images/logo/logo.svg"
               alt="logo"
-              width={140}
-              height={30}
+              width={60}
+              height={13}
             />
           </Link>
 

@@ -17,7 +17,7 @@ const Footer = () => {
               </svg>
             </a>
             {/* X (Twitter) */}
-            <a href="/" aria-label="X" className="text-body-color hover:text-primary">
+            <a href="https://x.com/MatrixTerra2026" target="_blank" rel="noopener noreferrer" aria-label="X" className="text-body-color hover:text-primary">
               <svg width="16" height="16" viewBox="0 0 22 22" fill="currentColor">
                 <path d="M13.9831 19.25L9.82094 13.3176L4.61058 19.25H2.40625L8.843 11.9233L2.40625 2.75H8.06572L11.9884 8.34127L16.9034 2.75H19.1077L12.9697 9.73737L19.6425 19.25H13.9831Z" />
               </svg>
@@ -47,7 +47,7 @@ const Footer = () => {
               </svg>
             </a>
             {/* Location */}
-            <a href="/contact" aria-label="Location" className="text-body-color hover:text-primary">
+            <a href="https://maps.app.goo.gl/kgHYwdT85VkVb5Tm9" target="_blank" rel="noopener noreferrer" aria-label="Location" className="text-body-color hover:text-primary">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -59,10 +59,10 @@ const Footer = () => {
           <div className="flex items-center gap-3">
             <Link href="/">
               <Image
-                src="/images/logo/logo-2.svg"
+                src="/images/logo/logo.svg"
                 alt="logo"
-                width={110}
-                height={24}
+                width={60}
+                height={13}
               />
             </Link>
             <span className="text-xs text-body-color">

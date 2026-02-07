@@ -6,40 +6,18 @@ const MasterAboutSection = () => {
       <div className="container">
         <div className="border-b border-body-color/[.15] pb-16 md:pb-20 lg:pb-28">
           <div>
-            <SectionTitle title="Engineering the Future with Intelligence & Precision" paragraph="Innovative engineering solutions powered by data, intelligence, and precision." mb="36px" />
+            <SectionTitle title="Engineering the Future with Intelligence & Precision" paragraph="Terra Matrix Engineering Consultant is a multidisciplinary engineering and analytics firm that bridges engineering domain expertise with advanced data intelligence and digital platforms." mb="36px" />
             <div className="text-body-color text-lg leading-relaxed space-y-6 text-justify">
               <p>
-                Terra Matrix Engineering Consultants offers end-to-end services
-                including <strong>structural design</strong>,{" "}
-                <strong>estimation</strong>, and{" "}
-                <strong>project management</strong> for buildings, roads, and
-                water infrastructure. Our advanced AI/ML solutions enable{" "}
-                <strong>predictive maintenance</strong>,{" "}
-                <strong>flood forecasting</strong>, and{" "}
-                <strong>smart irrigation</strong>, enhancing resilience and
-                operational efficiency across infrastructure systems.
+                Our strength lies in combining <strong>deep technical knowledge</strong>, <strong>research-driven solutions</strong>, and <strong>modern IT development</strong> to solve complex real-world problems for government bodies, industries, and academic institutions.
               </p>
 
               <p>
-                Our expertise in <strong>remote sensing and GIS</strong> supports
-                comprehensive land-use mapping, river basin analysis, and urban
-                planning. In parallel, our <strong>deep learning models</strong>{" "}
-                interpret satellite imagery to deliver accurate risk assessment
-                and data-driven insights for strategic decision-making.
-              </p>
-
-              <p>
-                With a multidisciplinary team of{" "}
-                <strong>PhD researchers and industry experts from IITs and NITs</strong>,
-                we deliver innovative solutions that optimise costs, improve
-                infrastructure resilience, and accelerate sustainable
-                development across India.
+                What sets us apart is our <strong>team composition</strong>—a rare blend of <strong>doctoral researchers</strong>, <strong>domain engineers</strong>, <strong>AI/ML specialists</strong>, <strong>GIS experts</strong>, and <strong>full-stack developers</strong> working together under one roof. This allows us to deliver solutions that are <strong>scientifically robust</strong>, <strong>technically sound</strong>, and <strong>practically implementable</strong>.
               </p>
 
               <p className="font-medium text-green">
-                From concept to commissioning, Terra Matrix Engineering
-                Consultants is your trusted partner for the future of
-                engineering.
+                We don't just provide consultancy—we <strong>design</strong>, <strong>develop</strong>, <strong>analyze</strong>, <strong>deploy</strong>, and <strong>support</strong> end-to-end solutions.
               </p>
             </div>
 
