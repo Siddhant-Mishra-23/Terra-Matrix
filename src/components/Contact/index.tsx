@@ -1,234 +1,162 @@
 "use client";
 
-import { useState } from "react";
-import NewsLatterBox from "./NewsLatterBox";
-import { WEB3FORMS_CONTACT_KEY } from "@/config/web3forms";
+import { motion } from "framer-motion";
+import SectionTitle from "../Common/SectionTitle";
+
+const contactInfo = {
+  companyName: "Terra Matrix Engineering Consultants",
+  address: "123 Innovation Street, Tech Park, Bengaluru, Karnataka - 560001, India",
+  gstin: "29XXXXX1234X1ZX",
+  email: "business@terramatrix.in",
+  phone: "+91 98765 43210",
+  mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.5965!2d77.5946!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU4JzE4LjAiTiA3N8KwMzUnNDAuNiJF!5e0!3m2!1sen!2sin!4v1234567890",
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
 
 const Contact = () => {
-  const [result, setResult] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-    setResult("Sending...");
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    const accessKey = WEB3FORMS_CONTACT_KEY;
-    if (!accessKey) {
-      form.reset();
-      setIsSubmitting(false);
-      return;
-    }
-    formData.append("access_key", accessKey);
-    form.reset();
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData,
-      });
-
-      const text = await response.text();
-      const data = (() => {
-        try {
-          return JSON.parse(text);
-        } catch {
-          return null;
-        }
-      })();
-
-      const successValue = data?.success;
-      const normalizedSuccess =
-        typeof successValue === "string"
-          ? successValue.trim().toLowerCase()
-          : successValue;
-      const isSuccess =
-        normalizedSuccess === true ||
-        normalizedSuccess === 1 ||
-        normalizedSuccess === "true" ||
-        normalizedSuccess === "1";
-      const isFailure =
-        normalizedSuccess === false ||
-        normalizedSuccess === 0 ||
-        normalizedSuccess === "false" ||
-        normalizedSuccess === "0";
-      const isOkStatus = response.status >= 200 && response.status < 400;
-
-      if (isSuccess || (isOkStatus && !isFailure)) {
-        setResult("Message sent successfully");
-      } else {
-        setResult(data?.message || `Error (${response.status})`);
-      }
-    } catch (error) {
-      setResult("Error");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
-    <section id="contact" className="overflow-hidden py-16 md:py-20 lg:py-28">
+    <section id="contact-info" className="py-16 md:py-20 lg:py-28 bg-gray-50">
       <div className="container">
-        <div className="-mx-4 flex flex-wrap">
-          <div className="w-full px-4 lg:w-7/12 xl:w-8/12">
-            <div
-              className="mb-12 rounded-xs bg-white px-8 py-11 shadow-three sm:p-[55px] lg:mb-5 lg:px-8 xl:p-[55px]"
-              data-wow-delay=".15s
-              "
-            >
-              <h2 className="mb-3 text-2xl font-bold text-black sm:text-3xl lg:text-2xl xl:text-3xl">
-                Need Help? Open a Ticket
-              </h2>
-              <p className="mb-12 text-base font-medium text-body-color">
-                Our support team will get back to you ASAP via email.
-              </p>
-              <form onSubmit={onSubmit}>
-                <div className="-mx-4 flex flex-wrap">
-                  <div className="w-full px-4 md:w-1/2">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="name"
-                        className="mb-3 block text-sm font-medium text-dark"
-                      >
-                        Your Name
-                      </label>
-                      <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        placeholder="Enter your name"
-                        required
-                        autoComplete="name"
-                        className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full px-4 md:w-1/2">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="email"
-                        className="mb-3 block text-sm font-medium text-dark"
-                      >
-                        Your Email
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        required
-                        autoComplete="email"
-                        className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full px-4">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="message"
-                        className="mb-3 block text-sm font-medium text-dark"
-                      >
-                        Your Message
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        rows={5}
-                        placeholder="Enter your Message"
-                        required
-                        className="border-stroke w-full resize-none rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary"
-                      ></textarea>
-                    </div>
-                  </div>
-                  <div className="w-full px-4 md:w-1/2">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="profession"
-                        className="mb-3 block text-sm font-medium text-dark"
-                      >
-                        Profession
-                      </label>
-                      <input
-                        id="profession"
-                        name="profession"
-                        type="text"
-                        placeholder="Enter your profession"
-                        className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full px-4 md:w-1/2">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="mobile"
-                        className="mb-3 block text-sm font-medium text-dark"
-                      >
-                        Mobile Number (Optional)
-                      </label>
-                      <input
-                        id="mobile"
-                        name="mobile"
-                        type="tel"
-                        placeholder="Enter your mobile number"
-                        className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full px-4 md:w-1/2">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="designation"
-                        className="mb-3 block text-sm font-medium text-dark"
-                      >
-                        Designation
-                      </label>
-                      <input
-                        id="designation"
-                        name="designation"
-                        type="text"
-                        placeholder="Enter your designation"
-                        className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full px-4 md:w-1/2">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="city"
-                        className="mb-3 block text-sm font-medium text-dark"
-                      >
-                        City
-                      </label>
-                      <input
-                        id="city"
-                        name="city"
-                        type="text"
-                        placeholder="Enter your city"
-                        className="border-stroke w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden focus:border-primary"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full px-4">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="rounded-xs bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
-                    >
-                      Submit Ticket
-                    </button>
-                    {result ? (
-                      <p className="mt-4 text-sm text-body-color">{result}</p>
-                    ) : null}
-                  </div>
-                </div>
-              </form>
+        <SectionTitle
+          title="Contact Us"
+          paragraph="Get in touch with Terra Matrix Engineering Consultants"
+          center
+          mb="60px"
+        />
+
+        <motion.div
+          className="grid grid-cols-1 gap-8 lg:grid-cols-2"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {/* Contact Details */}
+          <motion.div
+            variants={itemVariants}
+            className="rounded-xl bg-white p-8 shadow-one"
+          >
+            <h3 className="mb-8 text-2xl font-bold text-green">
+              Our Details
+            </h3>
+
+            {/* Company Name */}
+            <div className="mb-6 flex items-start">
+              <div className="mr-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <div>
+                <h4 className="mb-1 text-lg font-semibold text-dark">Company Name</h4>
+                <p className="text-body-color">{contactInfo.companyName}</p>
+              </div>
             </div>
-          </div>
-          <div className="w-full px-4 lg:w-5/12 xl:w-4/12">
-            <NewsLatterBox />
-          </div>
-        </div>
+
+            {/* Address */}
+            <div className="mb-6 flex items-start">
+              <div className="mr-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div>
+                <h4 className="mb-1 text-lg font-semibold text-dark">Address</h4>
+                <p className="text-body-color">{contactInfo.address}</p>
+              </div>
+            </div>
+
+            {/* GSTIN */}
+            <div className="mb-6 flex items-start">
+              <div className="mr-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <h4 className="mb-1 text-lg font-semibold text-dark">GSTIN</h4>
+                <p className="text-body-color font-mono">{contactInfo.gstin}</p>
+              </div>
+            </div>
+
+            {/* Email */}
+            <div className="mb-6 flex items-start">
+              <div className="mr-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h4 className="mb-1 text-lg font-semibold text-dark">Email</h4>
+                <a
+                  href={`mailto:${contactInfo.email}`}
+                  className="text-primary hover:underline"
+                >
+                  {contactInfo.email}
+                </a>
+              </div>
+            </div>
+
+            {/* Phone */}
+            <div className="flex items-start">
+              <div className="mr-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+              </div>
+              <div>
+                <h4 className="mb-1 text-lg font-semibold text-dark">Phone</h4>
+                <a
+                  href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}
+                  className="text-primary hover:underline"
+                >
+                  {contactInfo.phone}
+                </a>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Map */}
+          <motion.div
+            variants={itemVariants}
+            className="rounded-xl bg-white p-4 shadow-one overflow-hidden"
+          >
+            <div className="h-full min-h-[400px] rounded-lg overflow-hidden">
+              <iframe
+                src={contactInfo.mapEmbedUrl}
+                width="100%"
+                height="100%"
+                style={{ border: 0, minHeight: "400px" }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Terra Matrix Location"
+                className="rounded-lg"
+              />
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

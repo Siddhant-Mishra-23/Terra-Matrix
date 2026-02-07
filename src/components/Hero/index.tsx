@@ -117,7 +117,7 @@ const Hero = () => {
         <div className="w-full text-center relative z-10 -mt-55">
           <h1 className="text-primary text-4xl font-bold leading-tight sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight lg:text-7xl drop-shadow-lg">
             <span className="block">Welcome To</span>
-            <span className="block">Terra-Matrix Engineering</span>
+            <span className="block">Terra Matrix Engineering</span>
           </h1>
         </div>
 
