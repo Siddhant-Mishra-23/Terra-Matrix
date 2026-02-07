@@ -5,11 +5,12 @@ import SectionTitle from "../Common/SectionTitle";
 
 const contactInfo = {
   companyName: "Terra Matrix Engineering Consultants",
-  address: "123 Innovation Street, Tech Park, Bengaluru, Karnataka - 560001, India",
-  gstin: "29XXXXX1234X1ZX",
+  address: "Prakruti Vihar, Baramunda, Bhubaneswar, Odisha - 751003, India",
+  gstin: "21AAZFT3968K1ZC",
+  urn: "UDYAM-OD-19-0150995",
   email: "business@terramatrix.in",
-  phone: "+91 98765 43210",
-  mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.5965!2d77.5946!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU4JzE4LjAiTiA3N8KwMzUnNDAuNiJF!5e0!3m2!1sen!2sin!4v1234567890",
+  phones: ["+91-8658003717", "+91-7008038833"],
+  mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3742.6315247638595!2d85.80241099999999!3d20.274110999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjDCsDE2JzI2LjgiTiA4NcKwNDgnMDguNyJF!5e0!3m2!1sen!2sin!4v1770464908915!5m2!1sen!2sin",
 };
 
 const containerVariants = {
@@ -38,8 +39,8 @@ const Contact = () => {
     <section id="contact-info" className="py-16 md:py-20 lg:py-28 bg-gray-50">
       <div className="container">
         <SectionTitle
-          title="Contact Us"
-          paragraph="Get in touch with Terra Matrix Engineering Consultants"
+          title=""
+          paragraph=""
           center
           mb="60px"
         />
@@ -100,6 +101,19 @@ const Contact = () => {
               </div>
             </div>
 
+            {/* URN */}
+            <div className="mb-6 flex items-start">
+              <div className="mr-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h4 className="mb-1 text-lg font-semibold text-dark">URN</h4>
+                <p className="text-body-color font-mono">{contactInfo.urn}</p>
+              </div>
+            </div>
+
             {/* Email */}
             <div className="mb-6 flex items-start">
               <div className="mr-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -127,12 +141,17 @@ const Contact = () => {
               </div>
               <div>
                 <h4 className="mb-1 text-lg font-semibold text-dark">Phone</h4>
-                <a
-                  href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}
-                  className="text-primary hover:underline"
-                >
-                  {contactInfo.phone}
-                </a>
+                <div className="space-y-1">
+                  {contactInfo.phones.map((phone, index) => (
+                    <a
+                      key={index}
+                      href={`tel:${phone.replace(/[\s-]/g, '')}`}
+                      className="text-primary hover:underline block"
+                    >
+                      {phone}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
