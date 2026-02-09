@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import SectionTitle from "../Common/SectionTitle";
 
 const contactInfo = {
-  companyName: "Terra Matrix Engineering Consultants",
+  companyName: "Terra Matrix Engineering Consultant",
   address: "Prakruti Vihar, Baramunda, Bhubaneswar, Odisha - 751003, India",
   gstin: "21AAZFT3968K1ZC",
   urn: "UDYAM-OD-19-0150995",

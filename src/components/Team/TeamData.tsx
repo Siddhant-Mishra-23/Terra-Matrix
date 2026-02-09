@@ -56,6 +56,20 @@ export const TeamData: Team[] = [
     role: "Data and AI Engineer",
     bio: "Specialist in implementing AI and Data Solutions",
     image: "/images/team/Er. Siddhant Mishra.jpeg",
+  },
+  {
+    id: 9,
+    name: "Er. Sarita Kumari Pattanaik",
+    role: "Business Intelligence & Analytics Professional",
+    bio: "Specialist in BI analytics and data-driven solutions",
+    image: "/images/team/Er. Sarita Kumari Pattanaik.jpeg",
+  },
+  {
+    id: 10,
+    name: "Er. Aurosish Mohanty",
+    role: "Structural Design Engineer",
+    bio: "Specialist in structural design and project execution",
+    image: "/images/team/Er. Aurosish Mohanty.jpeg",
   }
 ];
 
@@ -409,4 +423,96 @@ export const Team_Member: TeamMember[] = [
     ContactNumber: new Int16Array([9, 1, 8, 0, 5, 8, 0, 6, 7, 4, 7, 3]),
     email: "siddhant mishra23@outlook.com",
   },
+  {
+    id: 9,
+    name: "Sarita Kumari Pattanaik",
+    role: "Business Intelligence & Analytics Professional",
+    domain: "Business Intelligence, Data Analytics & Reporting",
+    image: "/images/team/Er. Sarita Kumari Pattanaik.jpeg",
+    summary:
+      "Experienced IT professional with 13+ years of experience working with leading MNCs, delivering data-driven solutions across retail, manufacturing, and finance domains. Proven expertise in BI analytics, reporting, and data visualization, supporting business decision-making through scalable analytics solutions. Hands-on experience working with global clients and cross-functional teams across international markets.",
+    expertise: [
+      "Business Intelligence & Analytics Solutions",
+      "Data Reporting & Dashboard Development",
+      "Retail, Manufacturing & Finance Analytics",
+      "Enterprise Data Analysis & Insights Generation",
+      "Client Delivery & Stakeholder Collaboration",
+      "Data Visualization & BI Tools",
+      "Cross-functional Team Collaboration",
+    ],
+    experience: [
+      "13+ years of IT experience with leading MNCs",
+      "Delivered analytics solutions for retail customers across Singapore and the USA",
+      "Worked with global clients across international markets",
+      "Developed and maintained BI reporting solutions for retail, manufacturing, and finance domains",
+      "Collaborated with cross-functional teams to support business decision-making",
+    ],
+    Achievements: [
+      "Microsoft Certified Power BI Professional",
+      "Successfully delivered analytics solutions for retail customers across Singapore and the USA",
+      "13+ years of consistent delivery in data-driven solutions",
+    ],
+    softwareSkills: [
+      "Power BI",
+      "MySQL",
+      "Oracle Database",
+      "Strategy One",
+      "BI Reporting Tools",
+    ],
+    education: [
+      "Engineering Graduate (Er. prefix)",
+    ],
+    ContactNumber: new Int16Array([]),
+    email: "",
+  },
+  {
+    id: 10,
+    name: "Aurosish Mohanty",
+    role: "Structural Design Engineer",
+    domain: "Structural Engineering, Design & Construction",
+    image: "/images/team/Er. Aurosish Mohanty.jpeg",
+    summary:
+      "Result-oriented Structural Engineer with over 4 years of professional experience in structural design, construction, and project execution across industrial, infrastructure, and building projects. Experienced in handling government and private sector projects, coordinating with multidisciplinary teams, and delivering optimized structural solutions. Proven expertise in proof checking, structural vetting, strengthening and retrofitting works, and handling both domestic and international clients.",
+    expertise: [
+      "Structural Design of RCC & Steel Structures",
+      "Industrial, Commercial & Infrastructure Projects",
+      "Structural Proof Checking & Vetting Coordination",
+      "Retrofitting & Strengthening of Structures",
+      "Water Retaining Structures (ETP, PSTP, SPS & UG Tanks)",
+      "Steel Shed, Truss & Industrial Structural Design",
+      "Client Coordination & Project Execution",
+      "Multidisciplinary Team Coordination",
+    ],
+    experience: [
+      "4+ years of professional experience in structural design and construction",
+      "Structural design for industrial platforms, pipe supports, sheds, and plant structures",
+      "Multistoried hospital and institutional building projects",
+      "Design of underground tanks, drainage, and infrastructure structures",
+      "Bridge components including abutments, retaining walls, and protection works",
+      "Design and detailing of industrial and infrastructure facilities across multiple sectors",
+      "Handled government and private sector projects",
+      "Coordinated with domestic and international clients",
+    ],
+    Achievements: [
+      "Successfully delivered structural solutions across industrial, infrastructure, and building projects",
+      "Expertise in handling complex retrofitting and strengthening projects",
+      "Proven track record in multidisciplinary team coordination and project execution",
+    ],
+    softwareSkills: [
+      "STAAD Pro",
+      "ETABS",
+      "SAFE",
+      "SAP2000",
+      "STRAP",
+      "AutoCAD",
+      "DraftSight",
+      "MS Excel",
+      "MS PowerPoint",
+    ],
+    education: [
+      "B.Tech in Civil Engineering (Er. prefix)",
+    ],
+    ContactNumber: new Int16Array([]),
+    email: "",
+  }
 ];
