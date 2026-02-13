@@ -70,6 +70,13 @@ export const TeamData: Team[] = [
     role: "Structural Design Engineer",
     bio: "Specialist in structural design and project execution",
     image: "/images/team/Er. Aurosish Mohanty.jpeg",
+  },
+  {
+    id: 11,
+    name: "Nikhil Patra",
+    role: "Senior AI Engineer",
+    bio: "Senior AI Engineer at SAP specializing in Document AI, data engineering, cloud-based machine learning solutions, and AI-driven application development.",
+    image: "/images/team/Nikhil Patra.jpeg",
   }
 ];
 
@@ -511,6 +518,59 @@ export const Team_Member: TeamMember[] = [
     ],
     education: [
       "B.Tech in Civil Engineering (Er. prefix)",
+    ],
+    ContactNumber: new Int16Array([]),
+    email: "",
+  },
+  {
+    id: 11,
+    name: "Nikhil Patra",
+    role: "Senior AI Engineer",
+    domain: "Artificial Intelligence, Data Engineering & Cloud Solutions",
+    image: "/images/team/Nikhil Patra.jpeg",
+    summary:
+      "Senior AI Engineer at SAP with extensive experience in Document AI and Data Engineering within SAP’s AI organization. Spearheading data initiatives and leading engineering teams to build scalable data pipelines, knowledge graphs, and cloud-based machine learning solutions. Experienced in AI-driven document processing, Retrieval-Augmented Generation (RAG), data lakes, and automation using AWS and SAP BTP. Strong background in full-stack development, research, and agile project management with expertise in delivering enterprise-grade AI solutions.",
+    expertise: [
+      "Document AI & Machine Learning Solutions",
+      "Data Engineering & Automated Data Pipelines",
+      "Knowledge Graphs & RAG Implementation",
+      "Cloud Platforms (AWS, SAP BTP, AI Core)",
+      "Full Stack Application Development",
+      "Agile Methodologies, Scrum & TDD",
+      "Project & Vendor Management",
+      "Semantic Web & Data-Centric Systems",
+    ],
+    experience: [
+      "11+ years of experience at SAP across AI development, data engineering, and software engineering roles",
+      "Design and implementation of cloud-based ML document processing solutions",
+      "Leadership of Data Engineering team managing annotation and data acquisition projects",
+      "Development of knowledge graphs integrating heterogeneous data sources",
+      "Experience in microservices-based payroll applications on HANA Cloud Platform",
+      "Research experience in cyber defense, semantic data quality, and image processing",
+      "Enterprise application development in HCM Recruiting and Payroll systems",
+      "Experience working with banking, healthcare, and enterprise AI domains",
+    ],
+    Achievements: [
+      "Led key AI data initiatives within SAP’s AI organization",
+      "Built scalable data lakes and automated high-quality training data pipelines",
+      "Successfully delivered AI-powered cloud solutions for enterprise applications",
+      "Experience as Mindfulness Ambassador and Search Inside Yourself Trainer at SAP",
+    ],
+    softwareSkills: [
+      "Python",
+      "Java",
+      "JavaScript",
+      "C++",
+      "AWS",
+      "SAP BTP",
+      "AI Core",
+      "Metaflow",
+      "UI5",
+      "HANA Cloud Platform",
+    ],
+    education: [
+      "M.Sc. in Computer Science – University of Bonn",
+      "B.Tech in Computer Science and Engineering – Vellore Institute of Technology",
     ],
     ContactNumber: new Int16Array([]),
     email: "",
