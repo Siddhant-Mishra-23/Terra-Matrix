@@ -76,7 +76,7 @@ export const TeamData: Team[] = [
     name: "Nikhil Patra",
     role: "Senior AI Engineer",
     bio: "Senior AI Engineer at SAP specializing in Document AI, data engineering, cloud-based machine learning solutions, and AI-driven application development.",
-    image: "/images/team/Nikhil Patra.jpeg",
+    image: "/images/team/Nikhil Patra.jpg",
   }
 ];
 
