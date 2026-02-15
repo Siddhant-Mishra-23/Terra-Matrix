@@ -11,35 +11,44 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Terra Matrix - Innovative Digital Solutions",
   description:
-    "We design and develop scalable, high-performance digital products that help businesses grow and stand out",
-  keywords: ["terra", "metrix"],
+    "Terra Matrix designs and develops scalable, high-performance digital products that help businesses grow and stand out. Expert web development, software consulting, and digital transformation services.",
+  keywords: [
+    "Terra Matrix", "TerraMatrix",
+    "digital solutions", "web development", "software development", "digital transformation",
+    "tech consulting", "scalable applications", "high-performance websites", "custom software", "IT services", "business growth", "digital products",
+    "Odisha GIS", "Odisha AI Consultant", "Odisha best Consultant", "Dr. Sovan Sankalp", "Sovan Sankalp"
+  ],
   robots: {
     index: true,
     follow: true,
     googleBot: {
       index: true,
       follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   icons: {
     icon: "/favicon.ico",
-    // apple: "/images/apple-icon.png",
   },
   alternates: {
-    canonical: "https://terra-matrix.com/",
+    canonical: "https://terramatrix.in/",
   },
+
   openGraph: {
     title: "Terra Matrix - Innovative Digital Solutions",
     description:
       "We design and develop scalable, high-performance digital products that help businesses grow and stand out",
-    url: "https://terra-matrix.com/",
+    url: "https://terramatrix.in/",
     type: "website",
+    locale: "en_US",
     images: [
       {
-        url: "",
+        url: "https://terramatrix.in/images/TerraMatrix.png",
         width: 1200,
         height: 630,
-        alt: "Terra Matrix",
+        alt: "Terra Matrix - Innovative Digital Solutions",
       },
     ],
     siteName: "Terra Matrix",
@@ -51,7 +60,7 @@ export const metadata: Metadata = {
     title: "Terra Matrix - Innovative Digital Solutions",
     description:
       "We design and develop scalable, high-performance digital products that help businesses grow and stand out",
-    // images: [""],
+    images: ["https://terramatrix.in/images/TerraMatrix.png"],
   },
 };
 
