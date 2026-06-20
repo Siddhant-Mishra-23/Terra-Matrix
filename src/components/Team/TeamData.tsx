@@ -25,7 +25,7 @@ export const TeamData: Team[] = [
   {
     id: 4,
     name: "Aloka Prasad Mishra",
-    role: "Legal, HR and Compliance Specialist",
+    role: "Legal, HR and Compliance Advisor",
     bio: "Handles legal compliance, labor relations, and governance.",
     image: "/images/team/Aloka Prasad Mishra.jpg",
   },
@@ -60,7 +60,7 @@ export const TeamData: Team[] = [
   {
     id: 9,
     name: "Er. Sarita Kumari Pattanaik",
-    role: "Business Intelligence & Analytics Professional",
+    role: "Business Intelligence & Analytics Advisor",
     bio: "Specialist in BI analytics and data-driven solutions",
     image: "/images/team/Er. Sarita Kumari Pattanaik.jpeg",
   },
@@ -240,7 +240,7 @@ export const Team_Member: TeamMember[] = [
   {
     id: 4,
     name: "Aloka Prasad Mishra",
-    role: "Law Professional",
+    role: "Law Professional Advisor",
     domain: "Legal Affairs, HR & Institutional Governance",
     image: "/images/team/Aloka Prasad Mishra.jpg",
     summary:
@@ -433,7 +433,7 @@ export const Team_Member: TeamMember[] = [
   {
     id: 9,
     name: "Sarita Kumari Pattanaik",
-    role: "Business Intelligence & Analytics Professional",
+    role: "Business Intelligence & Analytics Advisor",
     domain: "Business Intelligence, Data Analytics & Reporting",
     image: "/images/team/Er. Sarita Kumari Pattanaik.jpeg",
     summary:
