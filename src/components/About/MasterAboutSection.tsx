@@ -17,7 +17,7 @@ const MasterAboutSection = () => {
               </p>
 
               <p className="font-medium text-green">
-                We don't just provide consultancy—we <strong>design</strong>, <strong>develop</strong>, <strong>analyze</strong>, <strong>deploy</strong>, and <strong>support</strong> end-to-end solutions.
+                We don&apos;t just provide consultancy—we <strong>design</strong>, <strong>develop</strong>, <strong>analyze</strong>, <strong>deploy</strong>, and <strong>support</strong> end-to-end solutions.
               </p>
             </div>
 

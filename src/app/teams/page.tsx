@@ -4,12 +4,12 @@ import TeamSection from "@/components/Team/TeamSection"
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact Page | Terra Matrix",
-  description: "This is Contact Page for Terra Matrix",
+  title: "Team | Terra Matrix",
+  description: "Meet the multidisciplinary team of engineers, technologists, and researchers behind Terra Matrix.",
   // other metadata
 };
 
-const ContactPage = () => {
+const TeamPage = () => {
   return (
     <>
       <Breadcrumb
@@ -21,4 +21,4 @@ const ContactPage = () => {
   );
 };
 
-export default ContactPage;
+export default TeamPage;
