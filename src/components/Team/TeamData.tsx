@@ -119,6 +119,13 @@ export const TeamData: Team[] = [
     role: "GIS Analyst, SCRUM Master & Water Resources Specialist",
     bio: "Specialist in urban planning, hydrology, and digital twin modeling using remote sensing, GIS, and agile workflows.",
     image: "/images/team/M Uma Maheswar Rao.jpg",
+  },
+  {
+    id: 18,
+    name: "Sobhan Jachuck",
+    role: "Director of Engineering",
+    bio: "Engineering leader with 14+ years of experience building distributed systems, scaling engineering organizations, and optimizing cloud infrastructure.",
+    image: "/images/team/Sobhan Jachuck.jpg",
   }
 ];
 
@@ -913,12 +920,63 @@ export const Team_Member: TeamMember[] = [
     ],
     ContactNumber: "",
     email: "",
+  },
+  {
+    id: 18,
+    name: "Sobhan Jachuck",
+    role: "Director of Engineering",
+    domain: "Engineering Leadership, Tech Architecture & Distributed Systems",
+    image: "/images/team/Sobhan Jachuck.jpg",
+    summary:
+      "Strategic and results-driven Engineering Leader with 14 years of experience in building distributed systems and 6 years of leading high-performance engineering teams. Proven track record of scaling systems 10x, reducing annual infrastructure costs by $500K, and driving large-scale GenAI/RAG automation.",
+    expertise: [
+      "Distributed Systems & Cloud-Native Architecture",
+      "Engineering Leadership & Mentoring",
+      "Cloud Cost Optimization & Management",
+      "GenAI, RAG & MCP Integration",
+      "Agile Methodologies & SOC2 Compliance",
+      "Third-Party Interoperability & Integration",
+    ],
+    experience: [
+      "Director of Engineering at Elevate K12 (2023–Present): Scaled org 3x, led 30 engineers across 4 teams, boosted classroom engagement by 30%, and reduced cloud costs by $500K/year.",
+      "Engineering Manager at Zepto (2022–2023): Led 11 engineers on core customer experience, driving a 15% increase in AOV through catalog and campaign features.",
+      "Co-Founder at RALLIB (2021–2022): Co-founded digital publishing platform, launched MVP on Android, and established partnerships with regional publishers.",
+      "Engineering Manager at Myntra (2019–2021): Led 12 engineers, built crawl platform scraping 5M pages/day, and cut operational costs by 20%.",
+      "Senior Software Engineer at Treebo Hotels (2017–2019): Built B2B products from scratch, improving sales by 15% and optimizing API latency by 30%.",
+      "Senior Software Engineer at TiVo (2013–2017): Contributed as an individual contributor to multiple data scraping, analysis, and knowledge graph projects.",
+      "Software Engineer at Hewlett Packard Global Soft (2011–2013): Worked on conversion of legacy COBOL applications to XML-based web services.",
+    ],
+    Achievements: [
+      "Achieved $500K (25%) annual cloud infrastructure savings at Elevate K12",
+      "Scaled crawl platform at Myntra by 10X to process 5 million pages daily",
+      "Co-founded regional digital publishing platform RALLIB and successfully launched Android MVP",
+      "Automated 40% of manual operational workflows using GenAI, RAG, and MCP",
+      "Led end-to-end engineering strategy to achieve SOC2 compliance for enterprise expansion",
+    ],
+    softwareSkills: [
+      "Python",
+      "Java",
+      "C# .Net",
+      "Angular",
+      "React",
+      "Flutter",
+      "SQL / NoSQL",
+      "CI/CD & IaC",
+      "Agentic RAG / MCP",
+      "AWS & Cloud Security",
+    ],
+    education: [
+      "M.Tech – Computer Science, Indian Institute of Technology Kharagpur (2009–2011)",
+      "B.Tech – Information Technology, Biju Patnaik University of Technology, Bhubaneswar (2004–2008)",
+    ],
+    ContactNumber: "+91-7795535175",
+    email: "sobhanjachuck@gmail.com",
   }
 ];
 
 export const GROUPS = {
   coreTeam: [1, 3, 2, 8, 5],
-  itAdvisors: [9, 11],
+  itAdvisors: [9, 11, 18],
   remoteSensing: [15, 6, 16, 17],
   civilEngineering: [13, 14],
   structuralEngineering: [7, 10, 12],
