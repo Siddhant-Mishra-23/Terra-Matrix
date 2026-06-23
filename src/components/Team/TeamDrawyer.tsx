@@ -1,6 +1,7 @@
 "use client";
-
+ 
 import { TeamMember } from "@/types/team";
+import Image from "next/image";
 
 interface TeamDrawerProps {
   member: TeamMember | null;
@@ -13,9 +14,7 @@ export default function TeamDrawer({
 }: TeamDrawerProps) {
   if (!member) return null;
 
-  const phoneNumber = Array.from(member.ContactNumber || [])
-    .map((digit) => String(digit))
-    .join("");
+  const phoneNumber = member.ContactNumber;
 
   return (
     <div className="fixed inset-0 z-50 flex">
@@ -34,11 +33,15 @@ export default function TeamDrawer({
           &lt;- Back to Team
         </button>
 
-        <img
-          src={member.image}
-          alt={member.name}
-          className="aspect-square w-full rounded-xl object-cover"
-        />
+        <div className="relative aspect-square w-full overflow-hidden rounded-xl">
+          <Image
+            src={member.image}
+            alt={member.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 576px) 100vw, 576px"
+          />
+        </div>
 
         <h3 className="mt-6 text-2xl font-bold text-gray-900">
           {member.name}
