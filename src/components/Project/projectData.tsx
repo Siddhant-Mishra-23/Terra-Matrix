@@ -22,28 +22,28 @@ const projectData: Project[] = [
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet dictum neque, laoreet dolor.",
     image: "/images/project/Project-02.jpg",
-    href: "/project-details/design-skills",
+    href: "/project-details/groundwater-forecast",
     author: {
       name: "Dr. Asit Kumar Dandapat",
       image: "/images/team/Dr. Asit Kumar Dandapat.jpeg",
-      designation: "Content Writer",
+      designation: "Hydrology and GIS Specialist",
     },
-    tags: ["computer"],
+    tags: ["Hydrology"],
     publishDate: "2025",
   },
   {
     id: 3,
-    title: "Tips to quickly improve your coding speed.",
+    title: "Fluvial Hydraulics and Flood Modelling Systems",
     paragraph:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet dictum neque, laoreet dolor.",
+      "Advanced flood modeling and fluvial hydraulic simulations for river basin management and disaster mitigation.",
     image: "/images/project/Project-03.jpg",
-    href: "/project-details/coding-speed",
+    href: "/project-details/groundwater-forecast",
     author: {
       name: "Dr. Arpan Pradhan",
       image: "/images/team/Dr. Arpan Pradhan.jpeg",
-      designation: "Graphic Designer",
+      designation: "Fluvial Hydraulics Specialist",
     },
-    tags: ["design"],
+    tags: ["Hydraulics"],
     publishDate: "2025",
   },
 ];
