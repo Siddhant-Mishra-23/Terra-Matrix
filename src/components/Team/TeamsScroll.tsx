@@ -37,7 +37,7 @@ const Team = () => {
 
   useEffect(() => {
     startAutoScroll();
-    return stopAutoScroll;
+    return () => stopAutoScroll();
   }, []);
 
   useEffect(() => {
