@@ -65,8 +65,8 @@ const Footer = () => {
                 height={13}
               />
             </Link>
-            <span className="text-xs text-body-color">
-              Tagline Tagline Tagline Tagline
+            <span className="text-xs font-semibold tracking-wide text-dark">
+              Learn. Connect. Innovate.
             </span>
           </div>
 
