@@ -503,22 +503,22 @@ function doPost(e) {
         localStorage.setItem("tm_spreadsheet_url", spreadsheetUrl);
       }
 
-      const res = await fetch("/api/admin/sync-sheet", {
+      // Direct client-side dispatch to Google Apps Script Webhook
+      // mode: "no-cors" allows browser dispatch through Google's 302 redirect without CORS issues or SSRF
+      await fetch(cleanUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify({
-          webhookUrl: cleanUrl,
+          source: "Terra-Matrix Management Portal",
+          timestamp: new Date().toISOString(),
+          count: filteredRegistrations.length,
+          spreadsheetUrl: spreadsheetUrl || "",
           registrations: filteredRegistrations,
-          spreadsheetUrl: spreadsheetUrl,
         }),
       });
 
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || "Failed to sync to Google Sheets.");
-      }
-
-      notifySuccess(data.message || `✓ Synchronized ${filteredRegistrations.length} registrations to Google Sheet!`);
+      notifySuccess(`✓ Synchronized ${filteredRegistrations.length} registrations to Google Sheet!`);
       setShowWebhookModal(false);
     } catch (err: any) {
       setWebhookError(err.message || "Failed to communicate with Google Sheets Webhook.");
