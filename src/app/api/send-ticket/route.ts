@@ -1,4 +1,5 @@
 import { generateGoogleCalendarUrl } from "@/lib/google-calendar";
+import { escapeHtml, sanitizeUrl } from "@/lib/security";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
@@ -43,6 +44,19 @@ export async function POST(request: Request) {
       description: `Official Verified Pass ID: ${pass.reference_id}\nParticipant: ${pass.full_name}\nMeeting Access: ${meetUrl}\nTimings: ${sessionTiming}`,
       location: meetUrl,
     });
+
+    // Sanitized variables for HTML template (prevents HTML injection / XSS)
+    const safeName = escapeHtml(pass.full_name);
+    const safeOrg = escapeHtml(pass.organization || "Academic / Industry Cohort");
+    const safeDesignation = escapeHtml(pass.designation || "Participant");
+    const safeRefId = escapeHtml(pass.reference_id);
+    const safeTitle = escapeHtml(pass.target_item_title);
+    const safeTiming = escapeHtml(sessionTiming);
+    const safeMode = escapeHtml(pass.preferred_mode || "Online Live");
+    const safeTxn = escapeHtml(pass.transaction_id || "Verified Seat (Free)");
+    const safeMeetUrl = sanitizeUrl(meetUrl);
+    const safeCalendarUrl = sanitizeUrl(calendarUrl);
+    const safePassUrl = sanitizeUrl(passUrl);
 
     // Beautiful Responsive Cyberpunk Holographic Email Template
     const htmlEmail = `
@@ -89,17 +103,17 @@ export async function POST(request: Request) {
                 OFFICIAL DELEGATE / CANDIDATE
               </div>
               <div style="font-size: 26px; font-weight: 900; color: #ffffff; margin-top: 4px; letter-spacing: -0.5px;">
-                ${pass.full_name}
+                ${safeName}
               </div>
               <div style="font-size: 13px; color: #7DD3FC; margin-top: 2px;">
-                ${pass.organization || "Academic / Industry Cohort"} • ${pass.designation || "Participant"}
+                ${safeOrg} • ${safeDesignation}
               </div>
             </td>
             <td align="right" valign="top">
               <div style="background-color: rgba(6,182,212,0.12); border: 1px solid rgba(6,182,212,0.4); border-radius: 12px; padding: 8px 14px; text-align: right; display: inline-block;">
                 <div style="font-size: 9px; color: #94A3B8; font-weight: 700; text-transform: uppercase;">Pass Reference</div>
                 <div style="font-family: monospace; font-size: 15px; font-weight: 900; color: #38BDF8; letter-spacing: 1px;">
-                  ${pass.reference_id}
+                  ${safeRefId}
                 </div>
               </div>
             </td>
@@ -114,7 +128,7 @@ export async function POST(request: Request) {
                 ENROLLED TECHNICAL PROGRAM
               </div>
               <div style="font-size: 18px; font-weight: 800; color: #F8FAFC; margin-top: 4px; line-height: 1.4;">
-                ${pass.target_item_title}
+                ${safeTitle}
               </div>
 
               <!-- Meta info grid -->
@@ -122,15 +136,15 @@ export async function POST(request: Request) {
                 <tr>
                   <td width="33%" style="font-size: 11px; color: #94A3B8;">
                     <strong>SCHEDULE:</strong><br>
-                    <span style="color: #ffffff; font-size: 12px; font-weight: 700;">${sessionTiming}</span>
+                    <span style="color: #ffffff; font-size: 12px; font-weight: 700;">${safeTiming}</span>
                   </td>
                   <td width="33%" style="font-size: 11px; color: #94A3B8;">
                     <strong>MODE:</strong><br>
-                    <span style="color: #34D399; font-size: 12px; font-weight: 700;">● ${pass.preferred_mode || "Online Live"}</span>
+                    <span style="color: #34D399; font-size: 12px; font-weight: 700;">● ${safeMode}</span>
                   </td>
                   <td width="33%" style="font-size: 11px; color: #94A3B8;">
                     <strong>PAYMENT REF:</strong><br>
-                    <span style="color: #FBBF24; font-size: 12px; font-weight: 700; font-family: monospace;">${pass.transaction_id || "Verified Seat (Free)"}</span>
+                    <span style="color: #FBBF24; font-size: 12px; font-weight: 700; font-family: monospace;">${safeTxn}</span>
                   </td>
                 </tr>
               </table>
@@ -142,14 +156,14 @@ export async function POST(request: Request) {
         <table role="presentation" width="100%" style="margin-top: 24px;">
           <tr>
             <td align="center" style="padding-bottom: 12px;">
-              <a href="${meetUrl}" target="_blank" style="display: block; width: 85%; background: linear-gradient(135deg, #10B981 0%, #0D9488 100%); color: #ffffff; font-size: 14px; font-weight: 900; text-align: center; text-decoration: none; padding: 14px 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(16,185,129,0.45); letter-spacing: 0.5px;">
+              <a href="${safeMeetUrl}" target="_blank" style="display: block; width: 85%; background: linear-gradient(135deg, #10B981 0%, #0D9488 100%); color: #ffffff; font-size: 14px; font-weight: 900; text-align: center; text-decoration: none; padding: 14px 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(16,185,129,0.45); letter-spacing: 0.5px;">
                 🚀 Launch Live Google Meet Room
               </a>
             </td>
           </tr>
           <tr>
             <td align="center">
-              <a href="${calendarUrl}" target="_blank" style="display: block; width: 85%; background: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%); color: #ffffff; font-size: 14px; font-weight: 900; text-align: center; text-decoration: none; padding: 14px 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(37,99,235,0.45); letter-spacing: 0.5px;">
+              <a href="${safeCalendarUrl}" target="_blank" style="display: block; width: 85%; background: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%); color: #ffffff; font-size: 14px; font-weight: 900; text-align: center; text-decoration: none; padding: 14px 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(37,99,235,0.45); letter-spacing: 0.5px;">
                 📅 + Add to Google Calendar (1-Click)
               </a>
             </td>
@@ -168,13 +182,13 @@ export async function POST(request: Request) {
                 OFFICIAL DIGITAL PASS LINK:
               </div>
               <div style="margin-top: 4px;">
-                <a href="${passUrl}" target="_blank" style="color: #38BDF8; font-size: 12px; text-decoration: underline; word-break: break-all;">
-                  ${passUrl}
+                <a href="${safePassUrl}" target="_blank" style="color: #38BDF8; font-size: 12px; text-decoration: underline; word-break: break-all;">
+                  ${safePassUrl}
                 </a>
               </div>
             </td>
             <td align="right" style="font-size: 11px; color: #64748B;">
-              Pass ID: <strong style="color: #ffffff; font-family: monospace;">${pass.reference_id}</strong><br>
+              Pass ID: <strong style="color: #ffffff; font-family: monospace;">${safeRefId}</strong><br>
               Terra-Matrix Academic Ops
             </td>
           </tr>

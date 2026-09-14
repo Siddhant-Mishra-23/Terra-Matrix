@@ -26,30 +26,33 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if user accidentally passed spreadsheet link instead of webhook URL
-    if (webhookUrl.includes("docs.google.com/spreadsheets")) {
+    // SSRF Protection: Strictly validate that destination is an authentic Google Apps Script Web App
+    let targetUrl: URL;
+    try {
+      targetUrl = new URL(webhookUrl.trim());
+    } catch {
       return NextResponse.json(
-        {
-          error:
-            "You entered a Google Spreadsheet link instead of an Apps Script Webhook URL. Google Sheets requires an Apps Script Web App to accept automated sync payloads.",
-          isSpreadsheetUrl: true,
-        },
+        { error: "Invalid Webhook URL format." },
         { status: 400 }
       );
     }
 
-    if (!webhookUrl.includes("script.google.com/macros/s/")) {
+    if (
+      targetUrl.protocol !== "https:" ||
+      targetUrl.hostname !== "script.google.com" ||
+      !targetUrl.pathname.startsWith("/macros/s/")
+    ) {
       return NextResponse.json(
         {
           error:
-            "Invalid Webhook URL format. A Google Apps Script Web App URL looks like: https://script.google.com/macros/s/.../exec",
+            "Invalid Webhook URL. For security, only secure Google Apps Script Web App endpoints (https://script.google.com/macros/s/.../exec) are permitted.",
         },
         { status: 400 }
       );
     }
 
     // Forward payload to Google Apps Script with redirect follow
-    const googleResponse = await fetch(webhookUrl, {
+    const googleResponse = await fetch(targetUrl.href, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -89,10 +92,17 @@ export async function POST(request: Request) {
     }
 
     // 2. Google Authentication / Login redirect (Deployed with 'Only myself' or domain restricted)
-    if (
-      responseText.includes("accounts.google.com") ||
-      responseText.includes("ServiceLogin")
-    ) {
+    let isGoogleLoginRedirect = false;
+    try {
+      if (googleResponse.url) {
+        const finalUrl = new URL(googleResponse.url);
+        if (finalUrl.hostname === "accounts.google.com") {
+          isGoogleLoginRedirect = true;
+        }
+      }
+    } catch {}
+
+    if (isGoogleLoginRedirect || responseText.includes("ServiceLogin")) {
       return NextResponse.json(
         {
           error:

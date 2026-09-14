@@ -7,6 +7,7 @@ import {
   generateGoogleCalendarUrl,
   generateWhatsAppChatUrl,
 } from "@/lib/google-calendar";
+import { escapeHtml, isSafeSpreadsheetUrl, sanitizeUrl } from "@/lib/security";
 import { createClient } from "@/lib/supabase/client";
 import { Registration, RegistrationStatus } from "@/types/registration";
 import { useEffect, useMemo, useState } from "react";
@@ -714,13 +715,25 @@ https://terramatrix.in`;
       location: customMeetLink,
     });
 
+    const safeName = escapeHtml(item.full_name);
+    const safeOrg = escapeHtml(item.organization || "Academic / Industry Cohort");
+    const safeDesignation = escapeHtml(item.designation || "Participant");
+    const safeRefId = escapeHtml(item.reference_id);
+    const safeTitle = escapeHtml(item.target_item_title);
+    const safeTiming = escapeHtml(sessionTiming);
+    const safeMode = escapeHtml(item.preferred_mode || "Online Live");
+    const safeTxn = escapeHtml(item.transaction_id || "Verified (Free)");
+    const safeMeetUrl = sanitizeUrl(customMeetLink);
+    const safeCalUrl = sanitizeUrl(calendarLink);
+    const safePassUrl = sanitizeUrl(passUrl);
+
     // 1. Generate & Download Standalone HTML Pass File
     const standaloneHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terra-Matrix Digital Pass - ${item.reference_id}</title>
+  <title>Terra-Matrix Digital Pass - ${safeRefId}</title>
   <style>
     body {
       margin: 0; padding: 30px 15px; background: #070C1E;
@@ -755,26 +768,26 @@ https://terramatrix.in`;
     </div>
     <div class="ticket-body">
       <div style="font-size:11px; color:#34D399; font-weight:800; text-transform:uppercase; letter-spacing:1.5px;">OFFICIAL CANDIDATE</div>
-      <div class="candidate-name">${item.full_name}</div>
-      <div class="org-text">${item.organization || "Academic / Industry Cohort"} • ${item.designation || "Participant"}</div>
+      <div class="candidate-name">${safeName}</div>
+      <div class="org-text">${safeOrg} • ${safeDesignation}</div>
 
       <div class="program-box">
         <div style="font-size:10px; color:#94A3B8; text-transform:uppercase; font-weight:700;">ENROLLED TECHNICAL PROGRAM</div>
-        <div class="program-title">${item.target_item_title}</div>
+        <div class="program-title">${safeTitle}</div>
         <div class="grid-info">
-          <div><span style="color:#94A3B8;">SCHEDULE:</span><br><strong>${sessionTiming}</strong></div>
-          <div><span style="color:#94A3B8;">MODE:</span><br><strong style="color:#34D399;">${item.preferred_mode || "Online Live"}</strong></div>
-          <div><span style="color:#94A3B8;">PAYMENT REF:</span><br><strong style="color:#FBBF24; font-family:monospace;">${item.transaction_id || "Verified (Free)"}</strong></div>
-          <div><span style="color:#94A3B8;">REF ID:</span><br><strong style="color:#38BDF8; font-family:monospace;">${item.reference_id}</strong></div>
+          <div><span style="color:#94A3B8;">SCHEDULE:</span><br><strong>${safeTiming}</strong></div>
+          <div><span style="color:#94A3B8;">MODE:</span><br><strong style="color:#34D399;">${safeMode}</strong></div>
+          <div><span style="color:#94A3B8;">PAYMENT REF:</span><br><strong style="color:#FBBF24; font-family:monospace;">${safeTxn}</strong></div>
+          <div><span style="color:#94A3B8;">REF ID:</span><br><strong style="color:#38BDF8; font-family:monospace;">${safeRefId}</strong></div>
         </div>
       </div>
 
-      <a href="${customMeetLink}" target="_blank" class="btn btn-meet">🚀 Launch Live Google Meet Room</a>
-      <a href="${calendarLink}" target="_blank" class="btn btn-cal">📅 + Add to Google Calendar</a>
+      <a href="${safeMeetUrl}" target="_blank" class="btn btn-meet">🚀 Launch Live Google Meet Room</a>
+      <a href="${safeCalUrl}" target="_blank" class="btn btn-cal">📅 + Add to Google Calendar</a>
     </div>
     <div class="ticket-footer">
-      <div>Pass ID: <strong style="color:#ffffff; font-family:monospace;">${item.reference_id}</strong></div>
-      <a href="${passUrl}" target="_blank" style="color:#38BDF8; text-decoration:underline;">Online Verification ↗</a>
+      <div>Pass ID: <strong style="color:#ffffff; font-family:monospace;">${safeRefId}</strong></div>
+      <a href="${safePassUrl}" target="_blank" style="color:#38BDF8; text-decoration:underline;">Online Verification ↗</a>
     </div>
   </div>
 </body>
@@ -783,7 +796,7 @@ https://terramatrix.in`;
     const blob = new Blob([standaloneHtml], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.download = `TerraMatrix_Pass_${item.reference_id}.html`;
+    link.download = `TerraMatrix_Pass_${safeRefId}.html`;
     link.href = url;
     link.click();
     URL.revokeObjectURL(url);
@@ -797,24 +810,24 @@ https://terramatrix.in`;
         </div>
         <div style="padding: 24px;">
           <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Participant Name</div>
-          <div style="font-size: 22px; font-weight: 800; color: #ffffff; margin-top: 2px;">${item.full_name}</div>
-          <div style="font-size: 12px; color: #38bdf8; margin-top: 2px;">${item.organization || "Academic / Industry Delegate"}</div>
+          <div style="font-size: 22px; font-weight: 800; color: #ffffff; margin-top: 2px;">${safeName}</div>
+          <div style="font-size: 12px; color: #38bdf8; margin-top: 2px;">${safeOrg}</div>
           
           <div style="margin-top: 20px; padding: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;">
             <div style="font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Program Title</div>
-            <div style="font-size: 16px; font-weight: 700; color: #f8fafc; margin-top: 2px;">${item.target_item_title}</div>
-            <div style="font-size: 12px; color: #10b981; margin-top: 6px;">📅 Timing: <strong>${sessionTiming}</strong> • Mode: <strong>${item.preferred_mode || "Online Live"}</strong></div>
-            ${item.transaction_id ? `<div style="font-size: 11px; color: #fbbf24; margin-top: 4px;">💳 Payment UTR: <strong>${item.transaction_id}</strong> (Verified)</div>` : ""}
+            <div style="font-size: 16px; font-weight: 700; color: #f8fafc; margin-top: 2px;">${safeTitle}</div>
+            <div style="font-size: 12px; color: #10b981; margin-top: 6px;">📅 Timing: <strong>${safeTiming}</strong> • Mode: <strong>${safeMode}</strong></div>
+            ${item.transaction_id ? `<div style="font-size: 11px; color: #fbbf24; margin-top: 4px;">💳 Payment UTR: <strong>${safeTxn}</strong> (Verified)</div>` : ""}
           </div>
 
           <div style="margin-top: 20px; text-align: center;">
-            <a href="${customMeetLink}" target="_blank" style="display: inline-block; background: #10b981; color: #ffffff; padding: 12px 24px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; margin-right: 10px; box-shadow: 0 4px 15px rgba(16,185,129,0.4);">🚀 Launch Google Meet Room</a>
-            <a href="${calendarLink}" target="_blank" style="display: inline-block; background: #2563eb; color: #ffffff; padding: 12px 24px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; box-shadow: 0 4px 15px rgba(37,99,235,0.4);">📅 + Add to Google Calendar</a>
+            <a href="${safeMeetUrl}" target="_blank" style="display: inline-block; background: #10b981; color: #ffffff; padding: 12px 24px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; margin-right: 10px; box-shadow: 0 4px 15px rgba(16,185,129,0.4);">🚀 Launch Google Meet Room</a>
+            <a href="${safeCalUrl}" target="_blank" style="display: inline-block; background: #2563eb; color: #ffffff; padding: 12px 24px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; box-shadow: 0 4px 15px rgba(37,99,235,0.4);">📅 + Add to Google Calendar</a>
           </div>
         </div>
         <div style="border-top: 1px dashed rgba(255,255,255,0.2); padding: 14px 24px; background: rgba(0,0,0,0.3); font-size: 11px; color: #94a3b8; display: flex; justify-content: space-between;">
-          <span>Pass ID: <strong style="color: #ffffff; font-family: monospace;">${item.reference_id}</strong></span>
-          <a href="${passUrl}" target="_blank" style="color: #38bdf8; text-decoration: underline;">Open Live Interactive Ticket ↗</a>
+          <span>Pass ID: <strong style="color: #ffffff; font-family: monospace;">${safeRefId}</strong></span>
+          <a href="${safePassUrl}" target="_blank" style="color: #38bdf8; text-decoration: underline;">Open Live Interactive Ticket ↗</a>
         </div>
       </div>
     `;
@@ -1649,9 +1662,9 @@ https://terramatrix.in`;
                 <label className="block text-xs font-bold text-dark">
                   Google Spreadsheet Link
                 </label>
-                {spreadsheetUrl && spreadsheetUrl.trim() && (
+                {spreadsheetUrl && isSafeSpreadsheetUrl(spreadsheetUrl) && (
                   <a
-                    href={spreadsheetUrl}
+                    href={sanitizeUrl(spreadsheetUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition"

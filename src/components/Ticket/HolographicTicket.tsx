@@ -1,6 +1,7 @@
 "use client";
 
 import { generateGoogleCalendarUrl } from "@/lib/google-calendar";
+import { escapeHtml, sanitizeUrl } from "@/lib/security";
 import { Registration } from "@/types/registration";
 import { toPng } from "html-to-image";
 import { useRef, useState } from "react";
@@ -50,17 +51,29 @@ export default function HolographicTicket({
     }
   };
 
-  // 1-Click Download Standalone HTML Ticket File (For Attaching to Email / WhatsApp)
-  const handleDownloadHtml = () => {
+  // 1-Click Download Offline Standalone Holographic Pass (HTML)
+  const handleDownloadStandaloneHtml = () => {
     const origin = typeof window !== "undefined" ? window.location.origin : "https://terramatrix.in";
     const passUrl = `${origin}/pass/${pass.reference_id}`;
+
+    const safeName = escapeHtml(pass.full_name);
+    const safeOrg = escapeHtml(pass.organization || "Academic / Industry Cohort");
+    const safeDesignation = escapeHtml(pass.designation || "Participant");
+    const safeRefId = escapeHtml(pass.reference_id);
+    const safeTitle = escapeHtml(pass.target_item_title);
+    const safeTiming = escapeHtml(sessionTiming);
+    const safeMode = escapeHtml(pass.preferred_mode || "Online Live");
+    const safeTxn = escapeHtml(pass.transaction_id || "Verified (Free)");
+    const safeMeetUrl = sanitizeUrl(meetUrl);
+    const safeCalUrl = sanitizeUrl(calendarUrl);
+    const safePassUrl = sanitizeUrl(passUrl);
 
     const standaloneHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terra-Matrix Digital Pass - ${pass.reference_id}</title>
+  <title>Terra-Matrix Digital Pass - ${safeRefId}</title>
   <style>
     body {
       margin: 0;
@@ -179,26 +192,26 @@ export default function HolographicTicket({
     </div>
     <div class="ticket-body">
       <div style="font-size:11px; color:#34D399; font-weight:800; text-transform:uppercase; letter-spacing:1.5px;">OFFICIAL CANDIDATE</div>
-      <div class="candidate-name">${pass.full_name}</div>
-      <div class="org-text">${pass.organization || "Academic / Industry Cohort"} • ${pass.designation || "Participant"}</div>
+      <div class="candidate-name">${safeName}</div>
+      <div class="org-text">${safeOrg} • ${safeDesignation}</div>
 
       <div class="program-box">
         <div style="font-size:10px; color:#94A3B8; text-transform:uppercase; font-weight:700;">ENROLLED TECHNICAL PROGRAM</div>
-        <div class="program-title">${pass.target_item_title}</div>
+        <div class="program-title">${safeTitle}</div>
         <div class="grid-info">
-          <div><span style="color:#94A3B8;">SCHEDULE:</span><br><strong>${sessionTiming}</strong></div>
-          <div><span style="color:#94A3B8;">MODE:</span><br><strong style="color:#34D399;">${pass.preferred_mode || "Online Live"}</strong></div>
-          <div><span style="color:#94A3B8;">PAYMENT REF:</span><br><strong style="color:#FBBF24; font-family:monospace;">${pass.transaction_id || "Verified (Free)"}</strong></div>
-          <div><span style="color:#94A3B8;">REF ID:</span><br><strong style="color:#38BDF8; font-family:monospace;">${pass.reference_id}</strong></div>
+          <div><span style="color:#94A3B8;">SCHEDULE:</span><br><strong>${safeTiming}</strong></div>
+          <div><span style="color:#94A3B8;">MODE:</span><br><strong style="color:#34D399;">${safeMode}</strong></div>
+          <div><span style="color:#94A3B8;">PAYMENT REF:</span><br><strong style="color:#FBBF24; font-family:monospace;">${safeTxn}</strong></div>
+          <div><span style="color:#94A3B8;">REF ID:</span><br><strong style="color:#38BDF8; font-family:monospace;">${safeRefId}</strong></div>
         </div>
       </div>
 
-      <a href="${meetUrl}" target="_blank" class="btn btn-meet">🚀 Launch Live Google Meet Room</a>
-      <a href="${calendarUrl}" target="_blank" class="btn btn-cal">📅 + Add to Google Calendar</a>
+      <a href="${safeMeetUrl}" target="_blank" class="btn btn-meet">🚀 Launch Live Google Meet Room</a>
+      <a href="${safeCalUrl}" target="_blank" class="btn btn-cal">📅 + Add to Google Calendar</a>
     </div>
     <div class="ticket-footer">
-      <div>Pass ID: <strong style="color:#ffffff; font-family:monospace;">${pass.reference_id}</strong></div>
-      <a href="${passUrl}" target="_blank" style="color:#38BDF8; text-decoration:underline;">Online Verification ↗</a>
+      <div>Pass ID: <strong style="color:#ffffff; font-family:monospace;">${safeRefId}</strong></div>
+      <a href="${safePassUrl}" target="_blank" style="color:#38BDF8; text-decoration:underline;">Online Verification ↗</a>
     </div>
   </div>
 </body>
@@ -207,7 +220,7 @@ export default function HolographicTicket({
     const blob = new Blob([standaloneHtml], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.download = `TerraMatrix_Pass_${pass.reference_id}.html`;
+    link.download = `TerraMatrix_Pass_${safeRefId}.html`;
     link.href = url;
     link.click();
     URL.revokeObjectURL(url);
@@ -218,6 +231,17 @@ export default function HolographicTicket({
     const origin = typeof window !== "undefined" ? window.location.origin : "https://terramatrix.in";
     const passUrl = `${origin}/pass/${pass.reference_id}`;
 
+    const safeName = escapeHtml(pass.full_name);
+    const safeOrg = escapeHtml(pass.organization || "Academic / Industry Delegate");
+    const safeRefId = escapeHtml(pass.reference_id);
+    const safeTitle = escapeHtml(pass.target_item_title);
+    const safeTiming = escapeHtml(sessionTiming);
+    const safeMode = escapeHtml(pass.preferred_mode || "Online Live");
+    const safeTxn = escapeHtml(pass.transaction_id || "Verified");
+    const safeMeetUrl = sanitizeUrl(meetUrl);
+    const safeCalUrl = sanitizeUrl(calendarUrl);
+    const safePassUrl = sanitizeUrl(passUrl);
+
     const htmlSnippet = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0b132b; border: 2px solid #10b981; border-radius: 20px; overflow: hidden; color: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         <div style="background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%); padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
@@ -226,24 +250,24 @@ export default function HolographicTicket({
         </div>
         <div style="padding: 24px;">
           <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Participant Name</div>
-          <div style="font-size: 22px; font-weight: 800; color: #ffffff; margin-top: 2px;">${pass.full_name}</div>
-          <div style="font-size: 12px; color: #38bdf8; margin-top: 2px;">${pass.organization || "Academic / Industry Delegate"}</div>
+          <div style="font-size: 22px; font-weight: 800; color: #ffffff; margin-top: 2px;">${safeName}</div>
+          <div style="font-size: 12px; color: #38bdf8; margin-top: 2px;">${safeOrg}</div>
           
           <div style="margin-top: 20px; padding: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;">
             <div style="font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Program Title</div>
-            <div style="font-size: 16px; font-weight: 700; color: #f8fafc; margin-top: 2px;">${pass.target_item_title}</div>
-            <div style="font-size: 12px; color: #10b981; margin-top: 6px;">📅 Timing: <strong>${sessionTiming}</strong> • Mode: <strong>${pass.preferred_mode || "Online Live"}</strong></div>
-            ${pass.transaction_id ? `<div style="font-size: 11px; color: #fbbf24; margin-top: 4px;">💳 Payment UTR: <strong>${pass.transaction_id}</strong> (Verified)</div>` : ""}
+            <div style="font-size: 16px; font-weight: 700; color: #f8fafc; margin-top: 2px;">${safeTitle}</div>
+            <div style="font-size: 12px; color: #10b981; margin-top: 6px;">📅 Timing: <strong>${safeTiming}</strong> • Mode: <strong>${safeMode}</strong></div>
+            ${pass.transaction_id ? `<div style="font-size: 11px; color: #fbbf24; margin-top: 4px;">💳 Payment UTR: <strong>${safeTxn}</strong> (Verified)</div>` : ""}
           </div>
 
           <div style="margin-top: 20px; text-align: center;">
-            <a href="${meetUrl}" target="_blank" style="display: inline-block; background: #10b981; color: #ffffff; padding: 12px 24px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; margin-right: 10px; box-shadow: 0 4px 15px rgba(16,185,129,0.4);">🚀 Launch Google Meet Room</a>
-            <a href="${calendarUrl}" target="_blank" style="display: inline-block; background: #2563eb; color: #ffffff; padding: 12px 24px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; box-shadow: 0 4px 15px rgba(37,99,235,0.4);">📅 + Add to Google Calendar</a>
+            <a href="${safeMeetUrl}" target="_blank" style="display: inline-block; background: #10b981; color: #ffffff; padding: 12px 24px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; margin-right: 10px; box-shadow: 0 4px 15px rgba(16,185,129,0.4);">🚀 Launch Google Meet Room</a>
+            <a href="${safeCalUrl}" target="_blank" style="display: inline-block; background: #2563eb; color: #ffffff; padding: 12px 24px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; box-shadow: 0 4px 15px rgba(37,99,235,0.4);">📅 + Add to Google Calendar</a>
           </div>
         </div>
         <div style="border-top: 1px dashed rgba(255,255,255,0.2); padding: 14px 24px; background: rgba(0,0,0,0.3); font-size: 11px; color: #94a3b8; display: flex; justify-content: space-between;">
-          <span>Pass ID: <strong style="color: #ffffff; font-family: monospace;">${pass.reference_id}</strong></span>
-          <a href="${passUrl}" target="_blank" style="color: #38bdf8; text-decoration: underline;">Open Live Interactive Ticket ↗</a>
+          <span>Pass ID: <strong style="color: #ffffff; font-family: monospace;">${safeRefId}</strong></span>
+          <a href="${safePassUrl}" target="_blank" style="color: #38bdf8; text-decoration: underline;">Open Live Interactive Ticket ↗</a>
         </div>
       </div>
     `;
@@ -359,7 +383,7 @@ export default function HolographicTicket({
           {/* Interactive Action Hub */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
             <a
-              href={meetUrl}
+              href={sanitizeUrl(meetUrl)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-5 py-3 text-xs font-black text-white shadow-lg shadow-emerald-500/30 transition hover:scale-[1.02] hover:brightness-110"
@@ -371,7 +395,7 @@ export default function HolographicTicket({
             </a>
 
             <a
-              href={calendarUrl}
+              href={sanitizeUrl(calendarUrl)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 text-xs font-black text-white shadow-lg shadow-blue-500/30 transition hover:scale-[1.02] hover:brightness-110"
@@ -423,7 +447,7 @@ export default function HolographicTicket({
         <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
           <div className="flex flex-wrap items-center gap-2">
             <button
-              onClick={handleDownloadHtml}
+              onClick={handleDownloadStandaloneHtml}
               className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-400 bg-emerald-500 px-4 py-2 text-xs font-black text-white hover:bg-emerald-600 transition cursor-pointer shadow-md"
             >
               📥 Download HTML Pass File
