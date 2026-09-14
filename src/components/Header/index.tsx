@@ -17,6 +17,10 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleSticky);
   }, []);
 
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/pass")) {
+    return null;
+  }
+
   return (
     <header
       className={`header top-0 left-0 z-40 w-full ${sticky
@@ -38,9 +42,9 @@ const Header = () => {
             />
           </Link>
 
-          {/* Desktop Navigation (LEFT aligned like before) */}
+          {/* Desktop Navigation */}
           <nav className="hidden lg:block">
-            <ul className="flex space-x-12">
+            <ul className="flex space-x-7 xl:space-x-9">
               {menuData.map((item) => (
                 <li key={item.id}>
                   <Link

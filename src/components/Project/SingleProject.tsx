@@ -3,52 +3,63 @@ import Image from "next/image";
 import Link from "next/link";
 
 const SingleProject = ({ project }: { project: Project }) => {
-  const { title, image, paragraph, author, tags, publishDate, href } = project;
+  const { id, title, image, paragraph, author, tags, publishDate, href } = project;
+  const projectLink = href && href !== "/project" ? href : `/project-details/${id}`;
+
   return (
-    <>
-      <div className="group shadow-one hover:shadow-two relative overflow-hidden rounded-xs bg-white duration-300">
-        <Link href={href} className="relative block aspect-37/22 w-full">
-          <span className="bg-primary absolute top-6 right-6 z-20 inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold text-white capitalize">
+    <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-xs transition-all duration-300 hover:border-primary/40 hover:shadow-xl hover:-translate-y-1">
+      {/* Top Media Image */}
+      <div>
+        <Link href={projectLink} className="relative block aspect-16/10 w-full overflow-hidden bg-gray-100">
+          <span className="bg-primary/90 backdrop-blur-xs absolute top-4 right-4 z-20 inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-bold text-white capitalize shadow">
             {tags[0]}
           </span>
-          <Image src={image} alt="image" fill />
+          <Image
+            src={image}
+            alt={title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
         </Link>
-        <div className="p-6 sm:p-8 md:px-6 md:py-8 lg:p-8 xl:px-5 xl:py-8 2xl:p-8">
+
+        {/* Card Content Area */}
+        <div className="p-6 sm:p-7 flex flex-col">
           <h3>
             <Link
-              href={href}
-              className="hover:text-primary mb-4 block text-xl font-bold text-black sm:text-2xl"
+              href={projectLink}
+              className="hover:text-primary mb-3 block text-lg font-bold text-dark sm:text-xl line-clamp-2 min-h-[54px] leading-snug transition-colors"
             >
               {title}
             </Link>
           </h3>
-          <p className="border-body-color/10 text-body-color mb-6 border-b pb-6 text-base font-medium">
+          <p className="border-body-color/10 text-body-color mb-4 border-b pb-4 text-xs sm:text-sm font-medium leading-relaxed line-clamp-3 min-h-[60px]">
             {paragraph}
           </p>
-          <div className="flex items-center">
-            <div className="border-body-color/10 mr-5 flex items-center border-r pr-5 xl:mr-3 xl:pr-3 2xl:mr-5 2xl:pr-5">
-              <div className="mr-4">
-                <div className="relative h-10 w-10 overflow-hidden rounded-full">
-                  <Image src={author.image} alt="author" fill />
-                </div>
-              </div>
-              <div className="w-full">
-                <h4 className="text-dark mb-1 text-sm font-medium">
-                  By {author.name}
-                </h4>
-                <p className="text-body-color text-xs">{author.designation}</p>
-              </div>
-            </div>
-            <div className="inline-block">
-              <h4 className="text-dark mb-1 text-sm font-medium">
-                Date
-              </h4>
-              <p className="text-body-color text-xs">{publishDate}</p>
-            </div>
-          </div>
         </div>
       </div>
-    </>
+
+      {/* Pinned Bottom Footer: Author & Date */}
+      <div className="px-6 pb-6 sm:px-7 sm:pb-7 pt-0 mt-auto flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full ring-2 ring-gray-100">
+            <Image src={author.image} alt={author.name} fill className="object-cover" />
+          </div>
+          <div>
+            <h4 className="text-dark text-xs font-bold leading-tight">
+              {author.name}
+            </h4>
+            <p className="text-body-color text-[11px] font-medium leading-tight mt-0.5">
+              {author.designation}
+            </p>
+          </div>
+        </div>
+
+        <div className="text-right border-l border-gray-100 pl-3">
+          <span className="block text-[10px] uppercase font-bold text-gray-400">Date</span>
+          <span className="text-dark font-semibold text-xs">{publishDate}</span>
+        </div>
+      </div>
+    </div>
   );
 };
 

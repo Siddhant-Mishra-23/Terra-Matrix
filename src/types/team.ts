@@ -1,15 +1,17 @@
 export type Team = {
-  id: number;
+  id: number | string;
   name: string;
   role: string;
   bio?: string;
   image: string;
 };
+
 export type TeamMember = {
-  id: number;
+  id: number | string;
   name: string;
   role: string;
   domain: string;
+  categoryGroup?: string;
   image: string;
   summary: string;
   expertise: string[];
@@ -19,4 +21,7 @@ export type TeamMember = {
   education: string[];
   ContactNumber: string;
   email: string;
+  order_index?: number;
+  linkedin?: string;
+  twitter?: string;
 };

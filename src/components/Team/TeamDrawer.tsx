@@ -1,5 +1,5 @@
 "use client";
- 
+
 import { TeamMember } from "@/types/team";
 import Image from "next/image";
 
@@ -17,41 +17,44 @@ export default function TeamDrawer({
   const phoneNumber = member.ContactNumber;
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div className="fixed inset-0 z-50 flex justify-end">
       {/* Overlay */}
       <div
-        className="flex-1 bg-black/50 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
       {/* Drawer */}
-      <aside className="w-full max-w-xl overflow-y-auto bg-white p-8">
-        <button
-          onClick={onClose}
-          className="mb-6 text-sm text-gray-500 hover:text-primary"
-        >
-          &lt;- Back to Team
-        </button>
+      <aside className="relative z-10 w-full max-w-lg overflow-y-auto bg-white p-5 sm:p-8 shadow-2xl transition-transform">
+        <div className="sticky top-0 z-20 -mx-5 -mt-5 mb-6 flex items-center justify-between border-b border-gray-100 bg-white/95 px-5 py-4 backdrop-blur-md sm:-mx-8 sm:-mt-8 sm:px-8">
+          <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Team Profile</span>
+          <button
+            onClick={onClose}
+            className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-700 hover:bg-red-50 hover:text-red-600 transition cursor-pointer"
+          >
+            ✕ Close
+          </button>
+        </div>
 
-        <div className="relative aspect-square w-full overflow-hidden rounded-xl">
+        <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-sm">
           <Image
             src={member.image}
             alt={member.name}
             fill
             className="object-cover"
-            sizes="(max-width: 576px) 100vw, 576px"
+            sizes="(max-width: 640px) 100vw, 500px"
           />
         </div>
 
-        <h3 className="mt-6 text-2xl font-bold text-gray-900">
+        <h3 className="mt-5 text-2xl font-black text-dark tracking-tight">
           {member.name}
         </h3>
-        <p className="text-primary">{member.role}</p>
-        <p className="text-sm text-gray-600">
+        <p className="font-bold text-primary text-sm mt-0.5">{member.role}</p>
+        <p className="text-xs font-semibold text-gray-500 mt-0.5">
           {member.domain}
         </p>
 
-        <p className="mt-4 text-gray-600">
+        <p className="mt-4 text-xs text-body-color leading-relaxed border-t border-gray-100 pt-3">
           {member.summary}
         </p>
 

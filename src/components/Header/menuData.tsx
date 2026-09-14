@@ -21,12 +21,24 @@ const menuData: Menu[] = [
   },
   {
     id: 4,
+    title: "Trainings",
+    path: "/trainings",
+    newTab: false,
+  },
+  {
+    id: 5,
+    title: "Conferences",
+    path: "/conferences",
+    newTab: false,
+  },
+  {
+    id: 6,
     title: "Teams",
     path: "/teams",
     newTab: false,
   },
   {
-    id: 5,
+    id: 7,
     title: "Contact",
     path: "/contact",
     newTab: false,
