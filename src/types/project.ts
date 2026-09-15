@@ -5,7 +5,7 @@ type Author = {
 };
 
 export type Project = {
-  id: number;
+  id: number | string;
   title: string;
   paragraph: string;
   image: string;
@@ -13,4 +13,8 @@ export type Project = {
   author: Author;
   tags: string[];
   publishDate: string;
+  content?: string;
+  created_at?: string;
+  updated_at?: string;
 };
+

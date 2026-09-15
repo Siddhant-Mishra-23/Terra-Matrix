@@ -1,8 +1,15 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Footer = () => {
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/pass")) {
+    return null;
+  }
+
   return (
     <footer className="bg-white py-5">
       <div className="container">
@@ -35,11 +42,17 @@ const Footer = () => {
               </svg>
             </Link>
             {/* YouTube */}
-            <Link href="/" aria-label="YouTube" className="text-body-color hover:text-primary">
+            <a
+              href="https://www.youtube.com/@terramatrixengg"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="text-body-color hover:text-primary"
+            >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
               </svg>
-            </Link>
+            </a>
             {/* Email */}
             <a href="mailto:business@terramatrix.in" aria-label="Email" className="text-body-color hover:text-primary">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -71,18 +84,34 @@ const Footer = () => {
           </div>
 
           {/* Right: Useful Links (Horizontal) */}
-          <div className="flex items-center gap-4 text-xs">
+          <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
             <Link href="/about" className="hover:text-primary">
               About
             </Link>
-            <Link href="/contact" className="hover:text-primary">
-              Contact
+            <Link href="/project" className="hover:text-primary">
+              Project
+            </Link>
+            <Link href="/trainings" className="hover:text-primary">
+              Trainings
+            </Link>
+            <Link href="/conferences" className="hover:text-primary">
+              Conferences
             </Link>
             <Link href="/teams" className="hover:text-primary">
               Teams
             </Link>
-            <Link href="/project" className="hover:text-primary">
-              Project
+            <Link href="/contact" className="hover:text-primary">
+              Contact
+            </Link>
+            <Link
+              href="/admin/login"
+              className="text-body-color/70 hover:text-primary transition flex items-center gap-1 hover:opacity-100"
+              title="Staff Portal Login"
+            >
+              <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>Admin</span>
             </Link>
           </div>
         </div>
