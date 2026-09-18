@@ -3,9 +3,21 @@ import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams, origin: urlOrigin } = new URL(request.url);
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/admin";
+
+  // Safeguard: Determine canonical origin (never bounce users to localhost in production)
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const forwardedProto = request.headers.get("x-forwarded-proto") || "https";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.terramatrix.in";
+
+  let origin = urlOrigin;
+  if (forwardedHost && !forwardedHost.includes("localhost")) {
+    origin = `${forwardedProto}://${forwardedHost}`;
+  } else if (origin.includes("localhost") && process.env.NODE_ENV === "production") {
+    origin = siteUrl;
+  }
 
   if (code) {
     const supabase = await createClient();
