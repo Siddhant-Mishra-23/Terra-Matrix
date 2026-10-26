@@ -1,47 +1,75 @@
 "use client";
 
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import fallbackProjectData from "@/components/Project/projectData";
 import SingleProject from "@/components/Project/SingleProject";
 import { createClient } from "@/lib/supabase/client";
 import { Project as ProjectType } from "@/types/project";
 import { useEffect, useState } from "react";
 
 const ProjectPage = () => {
-  const [projects, setProjects] = useState<ProjectType[]>(fallbackProjectData);
+  const [projects, setProjects] = useState<ProjectType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProjects = async () => {
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (!error && data) {
+        const mapped: ProjectType[] = data.map((d: any) => ({
+          id: d.id,
+          title: d.title,
+          paragraph: d.paragraph,
+          image: d.image || "/images/project/Project-01.png",
+          author: {
+            name: d.author_name || "Terra Matrix",
+            image: d.author_image || "/images/favicon.png",
+            designation: d.author_designation || "Engineering Team",
+          },
+          tags: d.tags || ["Infrastructure"],
+          publishDate: d.publish_date || "2026",
+          href: d.href || "/project",
+        }));
+        setProjects(mapped);
+      } else if (error) {
+        console.error("Error fetching projects from Supabase:", error);
+        setProjects([]);
+      }
+    } catch (err) {
+      console.error("Error fetching projects from Supabase:", err);
+      setProjects([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const supabase = createClient();
-        const { data, error } = await supabase
-          .from("projects")
-          .select("*")
-          .order("created_at", { ascending: false });
-
-        if (!error && data && data.length > 0) {
-          const mapped: ProjectType[] = data.map((d: any) => ({
-            id: d.id,
-            title: d.title,
-            paragraph: d.paragraph,
-            image: d.image || "/images/project/Project-01.png",
-            author: {
-              name: d.author_name || "Terra Matrix",
-              image: d.author_image || "/images/favicon.png",
-              designation: d.author_designation || "Engineering Team",
-            },
-            tags: d.tags || ["Infrastructure"],
-            publishDate: d.publish_date || "2026",
-            href: d.href || "/project",
-          }));
-          setProjects(mapped);
-        }
-      } catch (err) {
-        console.error("Error fetching projects from Supabase:", err);
-      }
-    };
-
     fetchProjects();
+
+    const supabase = createClient();
+    const channel = supabase
+      .channel("public-projects-grid-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "projects" },
+        () => {
+          fetchProjects();
+        }
+      )
+      .subscribe();
+
+    const handleFocus = () => fetchProjects();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+    };
   }, []);
 
   return (

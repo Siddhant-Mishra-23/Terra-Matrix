@@ -1,10 +1,6 @@
 "use client";
 
 import ImageUpload from "@/components/Admin/ImageUpload";
-import {
-  completedTrainings as fallbackCompleted,
-  upcomingTrainings as fallbackUpcoming,
-} from "@/components/Trainings/trainingsData";
 import { deleteStorageFileIfUploaded } from "@/lib/storage-cleanup";
 import { createClient } from "@/lib/supabase/client";
 import { Training } from "@/types/training";
@@ -15,7 +11,6 @@ export default function AdminTrainingsPage() {
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [syncingDefaults, setSyncingDefaults] = useState(false);
   const [filter, setFilter] = useState<"all" | "upcoming" | "completed">("all");
   const [search, setSearch] = useState("");
 
@@ -61,11 +56,13 @@ export default function AdminTrainingsPage() {
 
       if (error) {
         console.error("Error fetching trainings:", error);
+        setTrainings([]);
       } else if (data) {
         setTrainings(data as Training[]);
       }
     } catch (err) {
       console.error("Fetch trainings error:", err);
+      setTrainings([]);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -96,42 +93,6 @@ export default function AdminTrainingsPage() {
     setRefreshing(true);
     await fetchTrainings();
     notifySuccess("Trainings refreshed from database!");
-  };
-
-  const handleSeedDefaultTrainings = async () => {
-    if (!confirm("This will seed initial training sessions into your database. Continue?")) return;
-    setSyncingDefaults(true);
-    const supabase = createClient();
-
-    const allDefaults = [...fallbackUpcoming, ...fallbackCompleted].map((t) => ({
-      title: t.title,
-      description: t.description,
-      category: t.category,
-      date: t.date,
-      duration: t.duration,
-      mode: t.mode,
-      status: t.status,
-      image: t.image || "/images/about/geospatial.svg",
-      highlights: t.highlights || [],
-      attendees: t.attendees || null,
-      link: t.link || "/contact",
-      is_paid: false,
-      price: "Free",
-      upi_id: "terramatrix@upi",
-      updated_at: new Date().toISOString(),
-    }));
-
-    try {
-      const { error } = await supabase.from("trainings").insert(allDefaults);
-      if (error) throw error;
-      notifySuccess("Successfully seeded default trainings to database!");
-      await fetchTrainings();
-    } catch (err: any) {
-      console.error("Seed trainings error:", err);
-      alert("Failed to seed trainings: " + (err.message || "Unknown error"));
-    } finally {
-      setSyncingDefaults(false);
-    }
   };
 
   const openCreateModal = () => {
@@ -396,15 +357,11 @@ export default function AdminTrainingsPage() {
             Loading trainings...
           </div>
         ) : filteredTrainings.length === 0 ? (
-          <div className="p-12 text-center text-sm text-body-color space-y-3">
-            <p>No training sessions found.</p>
-            <button
-              onClick={handleSeedDefaultTrainings}
-              disabled={syncingDefaults}
-              className="inline-flex items-center gap-2 rounded-lg bg-primary/10 border border-primary px-4 py-2 text-xs font-semibold text-primary hover:bg-primary hover:text-white transition"
-            >
-              {syncingDefaults ? "Seeding..." : "Seed Default Trainings to Database"}
-            </button>
+          <div className="p-12 text-center text-sm text-body-color space-y-2">
+            <p className="font-semibold text-dark text-base">No training sessions found.</p>
+            <p className="text-xs text-body-color">
+              There are currently no training sessions in your database. Click <span className="font-semibold text-dark">"+ Add New Training"</span> above to publish a new session.
+            </p>
           </div>
         ) : (
           <div className="overflow-x-auto">

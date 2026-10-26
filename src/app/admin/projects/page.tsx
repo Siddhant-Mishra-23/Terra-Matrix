@@ -1,7 +1,6 @@
 "use client";
 
 import ImageUpload from "@/components/Admin/ImageUpload";
-import fallbackProjectData from "@/components/Project/projectData";
 import { deleteStorageFileIfUploaded } from "@/lib/storage-cleanup";
 import { createClient } from "@/lib/supabase/client";
 import { Project } from "@/types/project";
@@ -12,7 +11,6 @@ export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [syncingDefaults, setSyncingDefaults] = useState(false);
   const [search, setSearch] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,37 +96,6 @@ export default function AdminProjectsPage() {
     setRefreshing(true);
     await fetchProjects();
     notifySuccess("Projects refreshed from database!");
-  };
-
-  const handleSeedDefaultProjects = async () => {
-    if (!confirm("This will seed default initial projects into your database. Continue?")) return;
-    setSyncingDefaults(true);
-    const supabase = createClient();
-
-    const payload = fallbackProjectData.map((p) => ({
-      title: p.title,
-      paragraph: p.paragraph,
-      image: p.image,
-      author_name: p.author.name,
-      author_designation: p.author.designation,
-      author_image: p.author.image,
-      tags: p.tags,
-      publish_date: p.publishDate,
-      href: p.href,
-      updated_at: new Date().toISOString(),
-    }));
-
-    try {
-      const { error } = await supabase.from("projects").insert(payload);
-      if (error) throw error;
-      notifySuccess("Successfully seeded default projects to database!");
-      await fetchProjects();
-    } catch (err: any) {
-      console.error("Seed projects error:", err);
-      alert("Failed to seed projects: " + (err.message || "Unknown error"));
-    } finally {
-      setSyncingDefaults(false);
-    }
   };
 
   const openCreateModal = () => {
@@ -313,15 +280,11 @@ export default function AdminProjectsPage() {
             Loading projects...
           </div>
         ) : filteredProjects.length === 0 ? (
-          <div className="p-12 text-center text-sm text-body-color space-y-3">
-            <p>No projects found.</p>
-            <button
-              onClick={handleSeedDefaultProjects}
-              disabled={syncingDefaults}
-              className="inline-flex items-center gap-2 rounded-lg bg-primary/10 border border-primary px-4 py-2 text-xs font-semibold text-primary hover:bg-primary hover:text-white transition"
-            >
-              {syncingDefaults ? "Seeding..." : "Seed Default Projects to Database"}
-            </button>
+          <div className="p-12 text-center text-sm text-body-color space-y-2">
+            <p className="font-semibold text-dark text-base">No projects found.</p>
+            <p className="text-xs text-body-color">
+              There are currently no projects in your database. Click <span className="font-semibold text-dark">"+ Add New Project"</span> above to publish a project.
+            </p>
           </div>
         ) : (
           <div className="overflow-x-auto">

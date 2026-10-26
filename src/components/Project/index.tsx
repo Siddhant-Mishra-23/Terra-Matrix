@@ -5,7 +5,6 @@ import { Project as ProjectType } from "@/types/project";
 import { useEffect, useState } from "react";
 import SectionTitle from "../Common/SectionTitle";
 import SingleProject from "./SingleProject";
-import fallbackProjects from "./projectData";
 
 const Project = () => {
   const [projects, setProjects] = useState<ProjectType[]>([]);
@@ -36,11 +35,12 @@ const Project = () => {
         }));
         setProjects(mapped);
       } else if (error) {
-        console.warn("Error fetching projects from Supabase, using fallback:", error);
-        setProjects(fallbackProjects);
+        console.error("Error fetching projects from Supabase:", error);
+        setProjects([]);
       }
     } catch (err) {
       console.error("Error fetching projects from Supabase:", err);
+      setProjects([]);
     } finally {
       setLoading(false);
     }

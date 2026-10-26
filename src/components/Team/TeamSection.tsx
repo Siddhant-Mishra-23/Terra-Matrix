@@ -5,7 +5,7 @@ import { TeamMember } from "@/types/team";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { GROUPS, Team_Member as fallbackMembers } from "./TeamData";
+import { GROUPS } from "./TeamData";
 import TeamDrawer from "./TeamDrawer";
 
 const SECTION_ORDER = [
@@ -61,16 +61,12 @@ export default function TeamSection() {
 
         setAllMembers(mapped);
       } else if (error) {
-        console.warn("Error fetching team profiles from Supabase, using fallback:", error);
-        setAllMembers(
-          fallbackMembers.map((m) => ({
-            ...m,
-            categoryGroup: getCategoryGroupForId(m.id),
-          }))
-        );
+        console.error("Error fetching team profiles from Supabase:", error);
+        setAllMembers([]);
       }
     } catch (err) {
       console.error("Error fetching team profiles from Supabase:", err);
+      setAllMembers([]);
     }
   };
 
