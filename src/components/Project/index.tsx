@@ -8,40 +8,70 @@ import SingleProject from "./SingleProject";
 import fallbackProjects from "./projectData";
 
 const Project = () => {
-  const [projects, setProjects] = useState<ProjectType[]>(fallbackProjects);
+  const [projects, setProjects] = useState<ProjectType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProjects = async () => {
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (!error && data) {
+        const mapped: ProjectType[] = data.map((d: any) => ({
+          id: d.id,
+          title: d.title,
+          paragraph: d.paragraph,
+          image: d.image || "/images/project/Project-01.png",
+          author: {
+            name: d.author_name || "Terra Matrix",
+            image: d.author_image || "/images/favicon.png",
+            designation: d.author_designation || "Engineering Team",
+          },
+          tags: d.tags || ["Infrastructure"],
+          publishDate: d.publish_date || "2026",
+          href: d.href || "/project",
+        }));
+        setProjects(mapped);
+      } else if (error) {
+        console.warn("Error fetching projects from Supabase, using fallback:", error);
+        setProjects(fallbackProjects);
+      }
+    } catch (err) {
+      console.error("Error fetching projects from Supabase:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const supabase = createClient();
-        const { data, error } = await supabase
-          .from("projects")
-          .select("*")
-          .order("created_at", { ascending: false });
-
-        if (!error && data && data.length > 0) {
-          const mapped: ProjectType[] = data.map((d: any) => ({
-            id: d.id,
-            title: d.title,
-            paragraph: d.paragraph,
-            image: d.image || "/images/project/Project-01.png",
-            author: {
-              name: d.author_name || "Terra Matrix",
-              image: d.author_image || "/images/favicon.png",
-              designation: d.author_designation || "Engineering Team",
-            },
-            tags: d.tags || ["Infrastructure"],
-            publishDate: d.publish_date || "2026",
-            href: d.href || "/project",
-          }));
-          setProjects(mapped);
-        }
-      } catch (err) {
-        console.error("Error fetching projects from Supabase:", err);
-      }
-    };
-
     fetchProjects();
+
+    // Realtime listener
+    const supabase = createClient();
+    const channel = supabase
+      .channel("public-projects-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "projects" },
+        () => {
+          fetchProjects();
+        }
+      )
+      .subscribe();
+
+    // Re-fetch on tab focus
+    const handleFocus = () => fetchProjects();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+    };
   }, []);
 
   return (

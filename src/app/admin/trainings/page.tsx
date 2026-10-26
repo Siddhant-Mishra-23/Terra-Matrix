@@ -61,10 +61,8 @@ export default function AdminTrainingsPage() {
 
       if (error) {
         console.error("Error fetching trainings:", error);
-      } else if (data && data.length > 0) {
+      } else if (data) {
         setTrainings(data as Training[]);
-      } else {
-        setTrainings([...fallbackUpcoming, ...fallbackCompleted]);
       }
     } catch (err) {
       console.error("Fetch trainings error:", err);
@@ -76,6 +74,22 @@ export default function AdminTrainingsPage() {
 
   useEffect(() => {
     fetchTrainings();
+
+    const supabase = createClient();
+    const channel = supabase
+      .channel("admin-trainings-sync")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "trainings" },
+        () => {
+          fetchTrainings();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleManualRefresh = async () => {
@@ -97,8 +111,8 @@ export default function AdminTrainingsPage() {
       duration: t.duration,
       mode: t.mode,
       status: t.status,
-      image: t.image,
-      highlights: t.highlights,
+      image: t.image || "/images/about/geospatial.svg",
+      highlights: t.highlights || [],
       attendees: t.attendees || null,
       link: t.link || "/contact",
       is_paid: false,
@@ -153,7 +167,7 @@ export default function AdminTrainingsPage() {
       duration: item.duration,
       mode: item.mode,
       status: item.status,
-      image: item.image,
+      image: item.image || "/images/about/geospatial.svg",
       highlights: (item.highlights || []).join("\n"),
       attendees: item.attendees || "",
       link: item.link || "/contact",
@@ -185,7 +199,7 @@ export default function AdminTrainingsPage() {
       duration: formData.duration,
       mode: formData.mode,
       status: formData.status,
-      image: formData.image,
+      image: formData.image || "/images/about/geospatial.svg",
       highlights: highlightsArray,
       attendees: formData.attendees || null,
       link: formData.link,
@@ -197,9 +211,9 @@ export default function AdminTrainingsPage() {
     };
 
     try {
-      const isExistingUuid = editingTraining && typeof editingTraining.id === "string" && editingTraining.id.includes("-");
+      const isExisting = Boolean(editingTraining && editingTraining.id);
 
-      if (isExistingUuid) {
+      if (isExisting && editingTraining) {
         const { error } = await supabase
           .from("trainings")
           .update(payload)
@@ -230,10 +244,9 @@ export default function AdminTrainingsPage() {
     const itemToDelete = trainings.find((t) => t.id === id);
     const supabase = createClient();
     try {
-      if (typeof id === "string" && id.includes("-")) {
-        const { error } = await supabase.from("trainings").delete().eq("id", id);
-        if (error) throw error;
-      }
+      const { error } = await supabase.from("trainings").delete().eq("id", id);
+      if (error) throw error;
+
       if (itemToDelete?.image) {
         await deleteStorageFileIfUploaded(itemToDelete.image);
       }
@@ -248,14 +261,13 @@ export default function AdminTrainingsPage() {
     const newStatus = item.status === "upcoming" ? "completed" : "upcoming";
     const supabase = createClient();
     try {
-      if (typeof item.id === "string" && item.id.includes("-")) {
-        const { error } = await supabase
-          .from("trainings")
-          .update({ status: newStatus, updated_at: new Date().toISOString() })
-          .eq("id", item.id);
+      const { error } = await supabase
+        .from("trainings")
+        .update({ status: newStatus, updated_at: new Date().toISOString() })
+        .eq("id", item.id);
 
-        if (error) throw error;
-      }
+      if (error) throw error;
+
       setTrainings((prev) =>
         prev.map((t) => (t.id === item.id ? { ...t, status: newStatus } : t))
       );

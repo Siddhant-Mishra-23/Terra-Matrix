@@ -30,49 +30,74 @@ function getCategoryGroupForId(id: number | string): string {
 
 export default function TeamSection() {
   const [activeMember, setActiveMember] = useState<TeamMember | null>(null);
-  const [allMembers, setAllMembers] = useState<TeamMember[]>(
-    fallbackMembers.map((m) => ({
-      ...m,
-      categoryGroup: getCategoryGroupForId(m.id),
-    }))
-  );
+  const [allMembers, setAllMembers] = useState<TeamMember[]>([]);
+
+  const fetchLiveMembers = async () => {
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("teams")
+        .select("*")
+        .order("order_index", { ascending: true });
+
+      if (!error && data) {
+        const mapped: TeamMember[] = data.map((d: any) => ({
+          id: d.id,
+          name: d.name,
+          role: d.role || d.designation || "",
+          domain: d.domain || "",
+          categoryGroup: d.category_group || getCategoryGroupForId(d.order_index || 1),
+          image: d.image || "/images/favicon.png",
+          summary: d.summary || d.bio || "",
+          expertise: d.expertise || [],
+          experience: d.experience || [],
+          Achievements: d.achievements || [],
+          softwareSkills: d.software_skills || [],
+          education: d.education || [],
+          ContactNumber: d.contact_number || "",
+          email: d.email || "",
+          order_index: d.order_index || 0,
+        }));
+
+        setAllMembers(mapped);
+      } else if (error) {
+        console.warn("Error fetching team profiles from Supabase, using fallback:", error);
+        setAllMembers(
+          fallbackMembers.map((m) => ({
+            ...m,
+            categoryGroup: getCategoryGroupForId(m.id),
+          }))
+        );
+      }
+    } catch (err) {
+      console.error("Error fetching team profiles from Supabase:", err);
+    }
+  };
 
   useEffect(() => {
-    const fetchLiveMembers = async () => {
-      try {
-        const supabase = createClient();
-        const { data, error } = await supabase
-          .from("teams")
-          .select("*")
-          .order("order_index", { ascending: true });
-
-        if (!error && data && data.length > 0) {
-          const mapped: TeamMember[] = data.map((d: any) => ({
-            id: d.id,
-            name: d.name,
-            role: d.role || d.designation || "",
-            domain: d.domain || "",
-            categoryGroup: d.category_group || getCategoryGroupForId(d.order_index || 1),
-            image: d.image || "/images/favicon.png",
-            summary: d.summary || d.bio || "",
-            expertise: d.expertise || [],
-            experience: d.experience || [],
-            Achievements: d.achievements || [],
-            softwareSkills: d.software_skills || [],
-            education: d.education || [],
-            ContactNumber: d.contact_number || "",
-            email: d.email || "",
-            order_index: d.order_index || 0,
-          }));
-
-          setAllMembers(mapped);
-        }
-      } catch (err) {
-        console.error("Error fetching team profiles from Supabase:", err);
-      }
-    };
-
     fetchLiveMembers();
+
+    const supabase = createClient();
+    const channel = supabase
+      .channel("public-teams-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "teams" },
+        () => {
+          fetchLiveMembers();
+        }
+      )
+      .subscribe();
+
+    const handleFocus = () => fetchLiveMembers();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+    };
   }, []);
 
   return (

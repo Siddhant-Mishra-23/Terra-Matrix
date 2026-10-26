@@ -15,9 +15,10 @@ const SingleProject = ({ project }: { project: Project }) => {
             {tags[0]}
           </span>
           <Image
-            src={image}
+            src={image || "/images/project/Project-01.png"}
             alt={title}
             fill
+            unoptimized={Boolean(image?.startsWith("data:") || image?.startsWith("/uploads/"))}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         </Link>

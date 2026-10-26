@@ -12,35 +12,63 @@ import {
 } from "./trainingsData";
 
 const TrainingsSection = () => {
-  const [upcoming, setUpcoming] = useState<Training[]>(fallbackUpcoming);
-  const [completed, setCompleted] = useState<Training[]>(fallbackCompleted);
+  const [upcoming, setUpcoming] = useState<Training[]>([]);
+  const [completed, setCompleted] = useState<Training[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCorporateModalOpen, setIsCorporateModalOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchTrainings = async () => {
-      try {
-        const supabase = createClient();
-        const { data, error } = await supabase
-          .from("trainings")
-          .select("*")
-          .order("created_at", { ascending: false });
+  const fetchTrainings = async () => {
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("trainings")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-        if (!error && data && data.length > 0) {
-          const up = data.filter((t: any) => t.status === "upcoming");
-          const comp = data.filter((t: any) => t.status === "completed");
+      if (!error && data) {
+        const up = data.filter((t: any) => t.status === "upcoming");
+        const comp = data.filter((t: any) => t.status === "completed");
 
-          setUpcoming(up as Training[]);
-          setCompleted(comp as Training[]);
-        }
-      } catch (err) {
-        console.error("Error fetching live trainings from Supabase:", err);
-      } finally {
-        setLoading(false);
+        setUpcoming(up as Training[]);
+        setCompleted(comp as Training[]);
+      } else if (error) {
+        console.warn("Error fetching live trainings from Supabase, using fallback:", error);
+        setUpcoming(fallbackUpcoming);
+        setCompleted(fallbackCompleted);
       }
-    };
+    } catch (err) {
+      console.error("Error fetching live trainings from Supabase:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchTrainings();
+
+    // 1. Realtime subscription: Auto-reflect additions, edits, and deletions
+    const supabase = createClient();
+    const channel = supabase
+      .channel("public-trainings-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "trainings" },
+        () => {
+          fetchTrainings();
+        }
+      )
+      .subscribe();
+
+    // 2. Re-fetch whenever returning to tab
+    const handleFocus = () => fetchTrainings();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+    };
   }, []);
 
   return (

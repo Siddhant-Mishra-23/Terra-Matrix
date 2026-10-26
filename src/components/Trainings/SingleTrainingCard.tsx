@@ -63,9 +63,10 @@ const SingleTrainingCard = ({ training }: { training: Training }) => {
 
           <div className="relative h-full w-full p-6 flex items-center justify-center">
             <Image
-              src={image}
+              src={image || "/images/about/geospatial.svg"}
               alt={title}
               fill
+              unoptimized={Boolean(image?.startsWith("data:") || image?.startsWith("/uploads/"))}
               className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
             />
           </div>

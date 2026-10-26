@@ -13,36 +13,54 @@ export default function AdminDashboardPage() {
   });
   const [loading, setLoading] = useState(true);
 
+  const fetchCounts = async () => {
+    const supabase = createClient();
+    try {
+      const [
+        { count: trainingsCount },
+        { count: projectsCount },
+        { count: conferencesCount },
+        { count: teamsCount },
+      ] = await Promise.all([
+        supabase.from("trainings").select("*", { count: "exact", head: true }),
+        supabase.from("projects").select("*", { count: "exact", head: true }),
+        supabase.from("conferences").select("*", { count: "exact", head: true }),
+        supabase.from("teams").select("*", { count: "exact", head: true }),
+      ]);
+
+      setStats({
+        trainings: trainingsCount || 0,
+        projects: projectsCount || 0,
+        conferences: conferencesCount || 0,
+        teams: teamsCount || 0,
+      });
+    } catch (err) {
+      console.error("Error fetching stats:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchCounts = async () => {
-      const supabase = createClient();
-      try {
-        const [
-          { count: trainingsCount },
-          { count: projectsCount },
-          { count: conferencesCount },
-          { count: teamsCount },
-        ] = await Promise.all([
-          supabase.from("trainings").select("*", { count: "exact", head: true }),
-          supabase.from("projects").select("*", { count: "exact", head: true }),
-          supabase.from("conferences").select("*", { count: "exact", head: true }),
-          supabase.from("teams").select("*", { count: "exact", head: true }),
-        ]);
-
-        setStats({
-          trainings: trainingsCount || 0,
-          projects: projectsCount || 0,
-          conferences: conferencesCount || 0,
-          teams: teamsCount || 0,
-        });
-      } catch (err) {
-        console.error("Error fetching stats:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCounts();
+
+    const supabase = createClient();
+    const channel = supabase
+      .channel("admin-stats-sync")
+      .on("postgres_changes", { event: "*", schema: "public" }, () => {
+        fetchCounts();
+      })
+      .subscribe();
+
+    const handleFocus = () => fetchCounts();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+    };
   }, []);
 
   const cards = [
