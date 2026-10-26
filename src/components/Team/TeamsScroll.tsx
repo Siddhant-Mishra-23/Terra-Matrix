@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import SectionTitle from "../Common/SectionTitle";
-import { TeamData } from "./TeamData";
 import { Team as TeamType } from "@/types/team";
 
 const CARD_SCROLL = 310; // card + gap
@@ -44,7 +43,7 @@ const Team = () => {
     let supabaseChannel: any = null;
 
     const fetchAndShuffle = async () => {
-      let dataList: TeamType[] = TeamData;
+      let dataList: TeamType[] = [];
 
       try {
         const { createClient } = await import("@/lib/supabase/client");

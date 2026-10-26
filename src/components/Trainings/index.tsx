@@ -6,11 +6,6 @@ import { Training } from "@/types/training";
 import { useEffect, useState } from "react";
 import SectionTitle from "../Common/SectionTitle";
 import SingleTrainingCard from "./SingleTrainingCard";
-import {
-  completedTrainings as fallbackCompleted,
-  upcomingTrainings as fallbackUpcoming,
-} from "./trainingsData";
-
 const TrainingsSection = () => {
   const [upcoming, setUpcoming] = useState<Training[]>([]);
   const [completed, setCompleted] = useState<Training[]>([]);
@@ -32,12 +27,14 @@ const TrainingsSection = () => {
         setUpcoming(up as Training[]);
         setCompleted(comp as Training[]);
       } else if (error) {
-        console.warn("Error fetching live trainings from Supabase, using fallback:", error);
-        setUpcoming(fallbackUpcoming);
-        setCompleted(fallbackCompleted);
+        console.error("Error fetching live trainings from Supabase:", error);
+        setUpcoming([]);
+        setCompleted([]);
       }
     } catch (err) {
       console.error("Error fetching live trainings from Supabase:", err);
+      setUpcoming([]);
+      setCompleted([]);
     } finally {
       setLoading(false);
     }

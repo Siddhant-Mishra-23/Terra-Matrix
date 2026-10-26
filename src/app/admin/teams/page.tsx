@@ -1,7 +1,7 @@
 "use client";
 
 import ImageUpload from "@/components/Admin/ImageUpload";
-import { GROUPS, Team_Member as fallbackTeamMembers } from "@/components/Team/TeamData";
+import { GROUPS } from "@/components/Team/TeamData";
 import { deleteStorageFileIfUploaded } from "@/lib/storage-cleanup";
 import { createClient } from "@/lib/supabase/client";
 import { TeamMember } from "@/types/team";
@@ -32,7 +32,6 @@ export default function AdminTeamsPage() {
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [syncingDefaults, setSyncingDefaults] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedGroup, setSelectedGroup] = useState<string>("all");
 
@@ -96,17 +95,11 @@ export default function AdminTeamsPage() {
         }));
         setMembers(mapped);
       } else {
-        // If DB has 0 records, fallback to in-memory defaults
-        setMembers(
-          fallbackTeamMembers.map((m) => ({
-            ...m,
-            categoryGroup: getCategoryGroupForId(m.id),
-            order_index: typeof m.id === "number" ? m.id : 0,
-          }))
-        );
+        setMembers([]);
       }
     } catch (err) {
       console.error("Fetch teams catch error:", err);
+      setMembers([]);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -139,57 +132,6 @@ export default function AdminTeamsPage() {
     notifySuccess("Team profiles refreshed from database!");
   };
 
-  const handleSeedDefaultProfiles = async () => {
-    if (
-      !confirm(
-        "This will initialize/seed all 18 default in-depth team profiles into your Supabase database. Continue?"
-      )
-    )
-      return;
-
-    setSyncingDefaults(true);
-    const supabase = createClient();
-
-    const payload = fallbackTeamMembers.map((m, idx) => ({
-      name: m.name,
-      role: m.role,
-      designation: m.role,
-      domain: m.domain,
-      category_group: getCategoryGroupForId(m.id),
-      image: m.image,
-      summary: m.summary || "",
-      bio: m.summary || "",
-      expertise: m.expertise || [],
-      experience: m.experience || [],
-      achievements: m.Achievements || [],
-      software_skills: m.softwareSkills || [],
-      education: m.education || [],
-      contact_number: m.ContactNumber || "",
-      email: m.email || "",
-      order_index: idx + 1,
-      updated_at: new Date().toISOString(),
-    }));
-
-    try {
-      const { error } = await supabase.from("teams").upsert(payload, { onConflict: "id" });
-      if (error) {
-        // If upsert without id fails, perform clean insert
-        await supabase.from("teams").delete().neq("id", "00000000-0000-0000-0000-000000000000");
-        const { error: insErr } = await supabase.from("teams").insert(payload);
-        if (insErr) throw insErr;
-      }
-
-      notifySuccess("Successfully seeded all 18 default profiles to Supabase!");
-      await fetchTeamMembers();
-    } catch (err: any) {
-      console.error("Seed error:", err);
-      alert("Failed to seed team members: " + (err.message || "Unknown error"));
-    } finally {
-      setSyncDefaults(false);
-    }
-  };
-
-  const setSyncDefaults = (val: boolean) => setSyncingDefaults(val);
 
   const openCreateModal = () => {
     setEditingItem(null);
@@ -423,15 +365,11 @@ export default function AdminTeamsPage() {
             Loading team profiles from Supabase...
           </div>
         ) : filtered.length === 0 ? (
-          <div className="p-12 text-center text-sm text-body-color space-y-3">
-            <p>No team members found.</p>
-            <button
-              onClick={handleSeedDefaultProfiles}
-              disabled={syncingDefaults}
-              className="inline-flex items-center gap-2 rounded-lg bg-primary/10 border border-primary px-4 py-2 text-xs font-semibold text-primary hover:bg-primary hover:text-white transition"
-            >
-              {syncingDefaults ? "Seeding..." : "Seed Default 18 Team Profiles to Database"}
-            </button>
+          <div className="p-12 text-center text-sm text-body-color space-y-2">
+            <p className="font-semibold text-dark text-base">No team members found.</p>
+            <p className="text-xs text-body-color">
+              There are currently no team members in your database. Click <span className="font-semibold text-dark">"+ Add New Member"</span> above to add a team profile.
+            </p>
           </div>
         ) : (
           <div className="overflow-x-auto">

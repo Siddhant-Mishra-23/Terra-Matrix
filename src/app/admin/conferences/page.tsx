@@ -7,53 +7,10 @@ import { Conference } from "@/types/conference";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const fallbackConferences: Conference[] = [
-  {
-    id: "1",
-    title: "National Symposium on AI Applications in Civil & Geospatial Infrastructure 2026",
-    description:
-      "A flagship conference bringing together leading academicians, industry experts, and government stakeholders to discuss emerging AI paradigms in smart infrastructure.",
-    venue: "Bhubaneswar / Hybrid",
-    date: "November 14-15, 2026",
-    category: "National Conference",
-    image: "/images/about/innovation.svg",
-    status: "upcoming",
-    registration_link: "/contact",
-    is_paid: false,
-    price: "Free",
-    highlights: [
-      "Keynotes by AI & Civil Engineering Pioneers",
-      "Peer-Reviewed Paper Presentations",
-      "Industry Tech Demonstrations & Networking",
-      "Proceedings Published with ISBN / DOI Indexing",
-    ],
-  },
-  {
-    id: "2",
-    title: "International Workshop on Remote Sensing for Water Resource Resilience",
-    description:
-      "An interactive symposium on climate adaptation, hydrological modeling, and satellite data analytics for water security.",
-    venue: "Online Virtual Summit",
-    date: "December 05, 2026",
-    category: "International Workshop",
-    image: "/images/about/geospatial.svg",
-    status: "upcoming",
-    registration_link: "/contact",
-    is_paid: false,
-    price: "Free",
-    highlights: [
-      "Global Case Studies from 10+ Countries",
-      "Hands-on Technical Demonstration",
-      "Policy & Governance Panel Discussions",
-    ],
-  },
-];
-
 export default function AdminConferencesPage() {
   const [conferences, setConferences] = useState<Conference[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [syncingDefaults, setSyncingDefaults] = useState(false);
   const [search, setSearch] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -94,11 +51,13 @@ export default function AdminConferencesPage() {
 
       if (error) {
         console.error("Error fetching conferences:", error);
+        setConferences([]);
       } else if (data) {
         setConferences(data as Conference[]);
       }
     } catch (err) {
       console.error("Fetch conferences error:", err);
+      setConferences([]);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -129,40 +88,6 @@ export default function AdminConferencesPage() {
     setRefreshing(true);
     await fetchConferences();
     notifySuccess("Conferences refreshed from database!");
-  };
-
-  const handleSeedDefaultConferences = async () => {
-    if (!confirm("This will seed default conferences into your database. Continue?")) return;
-    setSyncingDefaults(true);
-    const supabase = createClient();
-
-    const payload = fallbackConferences.map((c) => ({
-      title: c.title,
-      description: c.description,
-      venue: c.venue,
-      date: c.date,
-      category: c.category,
-      image: c.image,
-      status: c.status,
-      registration_link: c.registration_link || "/contact",
-      is_paid: false,
-      price: "Free",
-      upi_id: "terramatrix@upi",
-      highlights: c.highlights || [],
-      updated_at: new Date().toISOString(),
-    }));
-
-    try {
-      const { error } = await supabase.from("conferences").insert(payload);
-      if (error) throw error;
-      notifySuccess("Successfully seeded default conferences to database!");
-      await fetchConferences();
-    } catch (err: any) {
-      console.error("Seed conferences error:", err);
-      alert("Failed to seed conferences: " + (err.message || "Unknown error"));
-    } finally {
-      setSyncingDefaults(false);
-    }
   };
 
   const openCreateModal = () => {
@@ -361,15 +286,11 @@ export default function AdminConferencesPage() {
             Loading conferences from Supabase...
           </div>
         ) : filtered.length === 0 ? (
-          <div className="p-12 text-center text-sm text-body-color space-y-3">
-            <p>No conferences found.</p>
-            <button
-              onClick={handleSeedDefaultConferences}
-              disabled={syncingDefaults}
-              className="inline-flex items-center gap-2 rounded-lg bg-primary/10 border border-primary px-4 py-2 text-xs font-semibold text-primary hover:bg-primary hover:text-white transition"
-            >
-              {syncingDefaults ? "Seeding..." : "Seed Default Conferences to Database"}
-            </button>
+          <div className="p-12 text-center text-sm text-body-color space-y-2">
+            <p className="font-semibold text-dark text-base">No conferences found.</p>
+            <p className="text-xs text-body-color">
+              There are currently no conferences in your database. Click <span className="font-semibold text-dark">"+ Add New Conference"</span> above to publish one.
+            </p>
           </div>
         ) : (
           <div className="overflow-x-auto">

@@ -1,7 +1,6 @@
 "use client";
 
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import projectData from "@/components/Project/projectData";
 import { createClient } from "@/lib/supabase/client";
 import { Project } from "@/types/project";
 import Image from "next/image";
@@ -46,16 +45,11 @@ export default function DynamicProjectDetailsPage() {
             content: data.content,
           });
         } else {
-          // Fallback to static array match if not found in database
-          const fallbackMatch = projectData.find(
-            (p) => String(p.id) === rawId || p.href.includes(rawId)
-          );
-          if (fallbackMatch) {
-            setProject(fallbackMatch);
-          }
+          setProject(null);
         }
       } catch (err) {
         console.error("Error fetching project details:", err);
+        setProject(null);
       } finally {
         setLoading(false);
       }

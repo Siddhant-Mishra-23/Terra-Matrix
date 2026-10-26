@@ -7,44 +7,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import SectionTitle from "../Common/SectionTitle";
 
-const fallbackConferences: Conference[] = [
-  {
-    id: "1",
-    title: "National Symposium on AI Applications in Civil & Geospatial Infrastructure 2026",
-    description:
-      "A flagship conference bringing together leading academicians, industry experts, and government stakeholders to discuss emerging AI paradigms in smart infrastructure.",
-    venue: "Bhubaneswar / Hybrid",
-    date: "November 14-15, 2026",
-    category: "National Conference",
-    image: "/images/about/innovation.svg",
-    status: "upcoming",
-    registration_link: "/contact",
-    highlights: [
-      "Keynotes by AI & Civil Engineering Pioneers",
-      "Peer-Reviewed Paper Presentations",
-      "Industry Tech Demonstrations & Networking",
-      "Proceedings Published with ISBN / DOI Indexing",
-    ],
-  },
-  {
-    id: "2",
-    title: "International Workshop on Remote Sensing for Water Resource Resilience",
-    description:
-      "An interactive symposium on climate adaptation, hydrological modeling, and satellite data analytics for water security.",
-    venue: "Online Virtual Summit",
-    date: "December 05, 2026",
-    category: "International Workshop",
-    image: "/images/about/geospatial.svg",
-    status: "upcoming",
-    registration_link: "/contact",
-    highlights: [
-      "Global Case Studies from 10+ Countries",
-      "Hands-on Technical Demonstration",
-      "Policy & Governance Panel Discussions",
-    ],
-  },
-];
-
 export default function ConferencesSection() {
   const [conferences, setConferences] = useState<Conference[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,11 +23,12 @@ export default function ConferencesSection() {
       if (!error && data) {
         setConferences(data as Conference[]);
       } else if (error) {
-        console.warn("Error fetching conferences from Supabase, using fallback:", error);
-        setConferences(fallbackConferences);
+        console.error("Error fetching conferences from Supabase:", error);
+        setConferences([]);
       }
     } catch (err) {
       console.error("Error fetching conferences from Supabase:", err);
+      setConferences([]);
     } finally {
       setLoading(false);
     }
