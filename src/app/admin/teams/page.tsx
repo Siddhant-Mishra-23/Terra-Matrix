@@ -115,6 +115,22 @@ export default function AdminTeamsPage() {
 
   useEffect(() => {
     fetchTeamMembers();
+
+    const supabase = createClient();
+    const channel = supabase
+      .channel("admin-teams-sync")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "teams" },
+        () => {
+          fetchTeamMembers();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleManualRefresh = async () => {
@@ -253,9 +269,9 @@ export default function AdminTeamsPage() {
     };
 
     try {
-      const isExistingUuid = editingItem && typeof editingItem.id === "string" && editingItem.id.includes("-");
+      const isExisting = Boolean(editingItem && editingItem.id);
 
-      if (isExistingUuid) {
+      if (isExisting && editingItem) {
         const { error } = await supabase
           .from("teams")
           .update(payload)
@@ -283,10 +299,9 @@ export default function AdminTeamsPage() {
     const itemToDelete = members.find((t) => t.id === id);
     const supabase = createClient();
     try {
-      if (typeof id === "string" && id.includes("-")) {
-        const { error } = await supabase.from("teams").delete().eq("id", id);
-        if (error) throw error;
-      }
+      const { error } = await supabase.from("teams").delete().eq("id", id);
+      if (error) throw error;
+
       if (itemToDelete?.image) {
         await deleteStorageFileIfUploaded(itemToDelete.image);
       }

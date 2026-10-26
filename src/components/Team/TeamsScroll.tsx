@@ -41,6 +41,8 @@ const Team = () => {
   }, []);
 
   useEffect(() => {
+    let supabaseChannel: any = null;
+
     const fetchAndShuffle = async () => {
       let dataList: TeamType[] = TeamData;
 
@@ -52,7 +54,7 @@ const Team = () => {
           .select("*")
           .order("order_index", { ascending: true });
 
-        if (!error && data && data.length > 0) {
+        if (!error && data) {
           dataList = data.map((d: any) => ({
             id: d.id,
             name: d.name,
@@ -60,6 +62,19 @@ const Team = () => {
             bio: d.summary || d.bio,
             image: d.image || "/images/favicon.png",
           }));
+        }
+
+        if (!supabaseChannel) {
+          supabaseChannel = supabase
+            .channel("public-teamsscroll-realtime")
+            .on(
+              "postgres_changes",
+              { event: "*", schema: "public", table: "teams" },
+              () => {
+                fetchAndShuffle();
+              }
+            )
+            .subscribe();
         }
       } catch (err) {
         console.error("Error fetching teams from Supabase:", err);
@@ -83,6 +98,15 @@ const Team = () => {
     };
 
     fetchAndShuffle();
+
+    const handleFocus = () => fetchAndShuffle();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+    };
   }, []);
 
   return (

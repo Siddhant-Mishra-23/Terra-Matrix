@@ -46,27 +46,57 @@ const fallbackConferences: Conference[] = [
 ];
 
 export default function ConferencesSection() {
-  const [conferences, setConferences] = useState<Conference[]>(fallbackConferences);
+  const [conferences, setConferences] = useState<Conference[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeModalConference, setActiveModalConference] = useState<Conference | null>(null);
 
-  useEffect(() => {
-    const fetchConferences = async () => {
-      try {
-        const supabase = createClient();
-        const { data, error } = await supabase
-          .from("conferences")
-          .select("*")
-          .order("created_at", { ascending: false });
+  const fetchConferences = async () => {
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("conferences")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-        if (!error && data && data.length > 0) {
-          setConferences(data as Conference[]);
-        }
-      } catch (err) {
-        console.error("Error fetching conferences from Supabase:", err);
+      if (!error && data) {
+        setConferences(data as Conference[]);
+      } else if (error) {
+        console.warn("Error fetching conferences from Supabase, using fallback:", error);
+        setConferences(fallbackConferences);
       }
-    };
+    } catch (err) {
+      console.error("Error fetching conferences from Supabase:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchConferences();
+
+    // 1. Supabase Realtime synchronization across all tabs and public clients
+    const supabase = createClient();
+    const channel = supabase
+      .channel("public-conferences-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "conferences" },
+        () => {
+          fetchConferences();
+        }
+      )
+      .subscribe();
+
+    // 2. Re-fetch whenever the user returns to this tab (e.g. after editing in admin panel)
+    const handleFocus = () => fetchConferences();
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
+    };
   }, []);
 
   return (
@@ -119,6 +149,7 @@ export default function ConferencesSection() {
                           src={item.image || "/images/about/innovation.svg"}
                           alt={item.title}
                           fill
+                          unoptimized={Boolean(item.image?.startsWith("data:") || item.image?.startsWith("/uploads/"))}
                           className="object-contain p-1"
                         />
                       </div>

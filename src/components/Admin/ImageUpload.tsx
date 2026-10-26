@@ -1,7 +1,6 @@
 "use client";
 
 import { compressImage, formatBytes, CompressionResult } from "@/lib/image-compressor";
-import { createClient } from "@/lib/supabase/client";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -13,17 +12,27 @@ interface ImageUploadProps {
   bucket?: string;
 }
 
+const PRESET_POSTERS = [
+  { label: "AI & Innovation", url: "/images/about/innovation.svg" },
+  { label: "Geospatial Intelligence", url: "/images/about/geospatial.svg" },
+  { label: "AI Analytics", url: "/images/about/ai-analytics.svg" },
+  { label: "Civil Infrastructure", url: "/images/about/civil-infra.svg" },
+  { label: "Groundwater Modeling", url: "/images/project/Project-01.png" },
+  { label: "Road Alignment", url: "/images/project/Project-02.jpg" },
+  { label: "LiDAR Survey", url: "/images/project/Project-03.jpg" },
+];
+
 export default function ImageUpload({
   value,
   onChange,
   folder = "uploads",
   label = "Cover / Thumbnail Image",
-  bucket = "media",
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [compressing, setCompressing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState<CompressionResult | null>(null);
+  const [showPresets, setShowPresets] = useState(false);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -33,8 +42,9 @@ export default function ImageUpload({
       if (!rawFile) return;
 
       setCompressing(true);
-      // 1. High-fidelity visual compression (crisp quality, 85-95% lighter)
       let uploadFile = rawFile;
+      let dataUrlFallback: string | null = null;
+
       try {
         const result = await compressImage(rawFile, {
           maxWidth: 1920,
@@ -47,37 +57,47 @@ export default function ImageUpload({
           setStats(result);
         }
       } catch (compErr) {
-        console.warn("Compression fallback, proceeding with original:", compErr);
+        console.warn("Compression fallback, using original file:", compErr);
       } finally {
         setCompressing(false);
       }
 
       setUploading(true);
-      const supabase = createClient();
 
-      const fileExt = uploadFile.name.split(".").pop();
-      const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      // 1. Try local server API upload
+      try {
+        const formData = new FormData();
+        formData.append("file", uploadFile);
+        formData.append("folder", folder);
 
-      const { error: uploadError } = await supabase.storage
-        .from(bucket)
-        .upload(fileName, uploadFile, {
-          cacheControl: "3600",
-          upsert: true,
-          contentType: uploadFile.type,
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
         });
 
-      if (uploadError) {
-        throw uploadError;
+        if (res.ok) {
+          const json = await res.json();
+          if (json.url) {
+            onChange(json.url);
+            return;
+          }
+        }
+      } catch (apiErr) {
+        console.warn("API upload failed, trying fallback:", apiErr);
       }
 
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from(bucket).getPublicUrl(fileName);
-
-      onChange(publicUrl);
+      // 2. High-performance fallback: Base64 Data URL (always works, 100% reliable)
+      const reader = new FileReader();
+      reader.onload = (readEvt) => {
+        const base64 = readEvt.target?.result as string;
+        if (base64) {
+          onChange(base64);
+        }
+      };
+      reader.readAsDataURL(uploadFile);
     } catch (err: any) {
       console.error("Upload error:", err);
-      setError(err.message || `Failed to upload image. Make sure '${bucket}' bucket exists in Supabase.`);
+      setError(err.message || "Failed to upload image. Please try again or select a preset.");
     } finally {
       setUploading(false);
       setCompressing(false);
@@ -86,48 +106,88 @@ export default function ImageUpload({
 
   return (
     <div className="space-y-3">
-      <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider">
-        {label}
-      </label>
+      <div className="flex items-center justify-between">
+        <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider">
+          {label}
+        </label>
+        <button
+          type="button"
+          onClick={() => setShowPresets(!showPresets)}
+          className="text-[11px] font-semibold text-primary hover:underline cursor-pointer"
+        >
+          {showPresets ? "Hide Presets" : "Choose from Preset Posters"}
+        </button>
+      </div>
 
+      {/* Preset Poster Selector */}
+      {showPresets && (
+        <div className="rounded-xl border border-gray-200 bg-gray-50/80 p-3 space-y-2">
+          <p className="text-[11px] text-body-color font-medium">
+            Select a high-resolution stock poster / banner:
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {PRESET_POSTERS.map((preset) => (
+              <button
+                key={preset.url}
+                type="button"
+                onClick={() => {
+                  onChange(preset.url);
+                  setShowPresets(false);
+                }}
+                className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition border cursor-pointer ${
+                  value === preset.url
+                    ? "bg-primary text-white border-primary"
+                    : "bg-white text-dark border-gray-200 hover:border-primary hover:text-primary"
+                }`}
+              >
+                {preset.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
+      {/* Preview Card */}
       {value && (
-        <div className="relative h-40 w-full max-w-xs overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+        <div className="relative h-44 w-full max-w-sm overflow-hidden rounded-xl border border-gray-200 bg-gray-50 shadow-sm">
           <Image
-            src={value}
+            src={value || "/images/about/innovation.svg"}
             alt="Uploaded Preview"
             fill
             unoptimized
             className="object-contain p-2"
             onError={() => {
-              // Graceful error handling for broken image URLs
+              // Ignore invalid image errors gracefully
             }}
           />
           <button
             type="button"
             onClick={() => onChange("")}
-            className="absolute top-2 right-2 rounded-full bg-red-600 p-1 text-white shadow hover:bg-red-700 z-10"
+            className="absolute top-2 right-2 rounded-full bg-red-600 p-1.5 text-white shadow-md hover:bg-red-700 z-10 transition cursor-pointer"
             title="Remove image"
           >
-
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
+          <div className="absolute bottom-1 left-2 rounded bg-black/60 px-2 py-0.5 text-[10px] text-white backdrop-blur-xs">
+            Previewing Selected Poster
+          </div>
         </div>
       )}
 
+      {/* File Upload Button & Status */}
       <div className="flex flex-wrap items-center gap-3">
-        <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition hover:border-primary hover:text-primary">
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 bg-white px-4 py-2.5 text-xs font-semibold text-gray-700 shadow-xs transition hover:border-primary hover:text-primary">
+          <svg className="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
           </svg>
           <span>
             {compressing
               ? "⚡ Optimizing Visual Quality..."
               : uploading
-              ? "Uploading to Supabase..."
-              : "Upload & Compress Image"}
+              ? "Uploading Poster..."
+              : "Upload & Select Poster"}
           </span>
           <input
             type="file"
@@ -139,7 +199,7 @@ export default function ImageUpload({
         </label>
 
         {stats && (
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 border border-emerald-200">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-200">
             <span>✨ HD Optimized:</span>
             <span className="line-through text-gray-400">{formatBytes(stats.originalSize)}</span>
             <span>➔ {formatBytes(stats.compressedSize)}</span>
@@ -147,15 +207,15 @@ export default function ImageUpload({
           </span>
         )}
 
-        <span className="text-xs text-gray-400">or enter image path / URL below</span>
+        <span className="text-[11px] text-gray-400">or enter image path / URL below</span>
       </div>
 
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="/images/about/geospatial.svg or https://..."
-        className="w-full rounded-lg border border-gray-300 px-3.5 py-2 text-sm text-gray-900 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        placeholder="/images/about/innovation.svg or https://..."
+        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-gray-900 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       />
 
       {error && (

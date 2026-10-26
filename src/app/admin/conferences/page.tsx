@@ -94,10 +94,8 @@ export default function AdminConferencesPage() {
 
       if (error) {
         console.error("Error fetching conferences:", error);
-      } else if (data && data.length > 0) {
+      } else if (data) {
         setConferences(data as Conference[]);
-      } else {
-        setConferences(fallbackConferences);
       }
     } catch (err) {
       console.error("Fetch conferences error:", err);
@@ -109,6 +107,22 @@ export default function AdminConferencesPage() {
 
   useEffect(() => {
     fetchConferences();
+
+    const supabase = createClient();
+    const channel = supabase
+      .channel("admin-conferences-sync")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "conferences" },
+        () => {
+          fetchConferences();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleManualRefresh = async () => {
@@ -210,7 +224,7 @@ export default function AdminConferencesPage() {
       venue: formData.venue,
       date: formData.date,
       category: formData.category,
-      image: formData.image,
+      image: formData.image || "/images/about/innovation.svg",
       status: formData.status,
       registration_link: formData.registration_link || "/contact",
       is_paid: formData.is_paid,
@@ -222,9 +236,9 @@ export default function AdminConferencesPage() {
     };
 
     try {
-      const isExistingUuid = editingItem && typeof editingItem.id === "string" && editingItem.id.includes("-");
+      const isExisting = Boolean(editingItem && editingItem.id);
 
-      if (isExistingUuid) {
+      if (isExisting && editingItem) {
         const { error } = await supabase
           .from("conferences")
           .update(payload)
@@ -253,10 +267,9 @@ export default function AdminConferencesPage() {
     const itemToDelete = conferences.find((c) => c.id === id);
     const supabase = createClient();
     try {
-      if (typeof id === "string" && id.includes("-")) {
-        const { error } = await supabase.from("conferences").delete().eq("id", id);
-        if (error) throw error;
-      }
+      const { error } = await supabase.from("conferences").delete().eq("id", id);
+      if (error) throw error;
+
       if (itemToDelete?.image) {
         await deleteStorageFileIfUploaded(itemToDelete.image);
       }

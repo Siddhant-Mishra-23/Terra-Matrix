@@ -49,12 +49,12 @@ export default function AdminProjectsPage() {
 
       if (error) {
         console.error("Error fetching projects:", error);
-      } else if (data && data.length > 0) {
+      } else if (data) {
         const mapped = data.map((d: any) => ({
           id: d.id,
           title: d.title,
           paragraph: d.paragraph,
-          image: d.image,
+          image: d.image || "/images/project/Project-01.png",
           author: {
             name: d.author_name || "Terra Matrix",
             image: d.author_image || "/images/favicon.png",
@@ -65,8 +65,6 @@ export default function AdminProjectsPage() {
           href: d.href || "/project",
         }));
         setProjects(mapped);
-      } else {
-        setProjects(fallbackProjectData);
       }
     } catch (err) {
       console.error("Fetch projects error:", err);
@@ -78,6 +76,22 @@ export default function AdminProjectsPage() {
 
   useEffect(() => {
     fetchProjects();
+
+    const supabase = createClient();
+    const channel = supabase
+      .channel("admin-projects-sync")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "projects" },
+        () => {
+          fetchProjects();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleManualRefresh = async () => {
@@ -176,9 +190,9 @@ export default function AdminProjectsPage() {
     };
 
     try {
-      const isExistingUuid = editingProject && typeof editingProject.id === "string" && editingProject.id.includes("-");
+      const isExisting = Boolean(editingProject && editingProject.id);
 
-      if (isExistingUuid) {
+      if (isExisting && editingProject) {
         const { error } = await supabase
           .from("projects")
           .update(payload)
@@ -207,10 +221,9 @@ export default function AdminProjectsPage() {
     const itemToDelete = projects.find((p) => p.id === id);
     const supabase = createClient();
     try {
-      if (typeof id === "string" && id.includes("-")) {
-        const { error } = await supabase.from("projects").delete().eq("id", id);
-        if (error) throw error;
-      }
+      const { error } = await supabase.from("projects").delete().eq("id", id);
+      if (error) throw error;
+
       if (itemToDelete?.image) {
         await deleteStorageFileIfUploaded(itemToDelete.image);
       }
